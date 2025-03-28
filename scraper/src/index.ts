@@ -5,44 +5,47 @@ import Store = require("./store");
 import Product = require("./product");
 
 const headers = [
-  "Inserted At",
-  "Store Name",
-  "Store Currency",
-  "Store URL",
-  "Product URL",
-  "Product Image",
-  "Product Scraped Name",
-  "Product Brand",
-  "Product Name",
-  "Product Gender",
-  "Original Price",
-  "Discount Price",
-  "Discount %",
-  "Is Mobile Discount",
-];
+  "insertedAt",
+  "storeName",
+  "storeCurrency",
+  "storeUrl",
+  "productUrl",
+  "productImage",
+  "productScrapedName",
+  "productBrand",
+  "productName",
+  "productGender",
+  "originalPrice",
+  "discountPrice",
+  "discountPercent",
+  "isMobileDiscount",
+] as const;
+type Headers = (typeof headers)[number];
 
 function writeStoreWithProductsToSheet(store: Store) {
   const googleSheets = new GoogleSheets();
-  googleSheets.addHeadersIfNeeded(headers);
+  googleSheets.addHeadersIfNeeded([...headers]);
 
-  const rows = store.products.map((product) => {
-    return [
-      new Date().toISOString(),
-      store.name,
-      store.currency,
-      store.url,
-      product.url,
-      product.image,
-      product.scrapedName,
-      product.brand,
-      product.name,
-      product.gender,
-      product.originalPrice,
-      product.discountPrice,
-      product.discountPercent,
-      product.isMobileDiscount,
-    ];
-  });
+  const rows = store.products.map(
+    (product): Record<Headers, string | number | boolean> => {
+      return {
+        insertedAt: new Date().toISOString(),
+        storeName: store.name,
+        storeCurrency: store.currency,
+        storeUrl: store.url,
+        productUrl: product.url,
+        productImage: product.image,
+        productScrapedName: product.scrapedName,
+        productBrand: product.brand,
+        productName: product.name,
+        productGender: product.gender,
+        originalPrice: product.originalPrice,
+        discountPrice: product.discountPrice,
+        discountPercent: product.discountPercent,
+        isMobileDiscount: product.isMobileDiscount,
+      };
+    }
+  );
 
   googleSheets.appendRows(rows);
 }
