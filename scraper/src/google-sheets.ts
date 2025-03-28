@@ -37,7 +37,7 @@ class GoogleSheets {
     console.log("Sheet cleared successfully.");
   }
 
-  async addHeadersIfNeeded(): Promise<void> {
+  async addHeadersIfNeeded(headers: string[]): Promise<void> {
     const response = await this.sheets.spreadsheets.values.get({
       spreadsheetId: this.spreadsheetId,
       range: SPREADSHEET_SHEET_NAME,
@@ -45,23 +45,6 @@ class GoogleSheets {
     const rows = response.data.values || [];
 
     if (rows.length !== 0) return;
-
-    const headers = [
-      "Inserted At",
-      "Store Name",
-      "Store Currency",
-      "Store URL",
-      "Product URL",
-      "Product Image",
-      "Product Scraped Name",
-      "Product Brand",
-      "Product Name",
-      "Product Gender",
-      "Original Price",
-      "Discount Price",
-      "Discount %",
-      "Is Mobile Discount",
-    ];
 
     await this.sheets.spreadsheets.values.append({
       spreadsheetId: this.spreadsheetId,
@@ -73,13 +56,13 @@ class GoogleSheets {
     });
   }
 
-  async appendRows(rows: unknown[]): Promise<void> {
+  async appendRows(rows: unknown[][]): Promise<void> {
     await this.sheets.spreadsheets.values.append({
       spreadsheetId: this.spreadsheetId,
       range: SPREADSHEET_SHEET_NAME,
       valueInputOption: "RAW",
       requestBody: {
-        values: [rows],
+        values: rows,
       },
     });
 
