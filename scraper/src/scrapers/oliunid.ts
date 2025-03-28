@@ -53,8 +53,6 @@ async function scrapeOliunid(): Promise<Store> {
         });
     });
 
-    console.log("Found products:", pageProductData);
-
     productData.push(...pageProductData);
 
     const hasNextPage = await page.evaluate(() => {
