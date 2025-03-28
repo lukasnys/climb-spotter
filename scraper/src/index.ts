@@ -22,9 +22,9 @@ const headers = [
 ] as const;
 type Headers = (typeof headers)[number];
 
-function writeStoreWithProductsToSheet(store: Store) {
+async function writeStoreWithProductsToSheet(store: Store) {
   const googleSheets = new GoogleSheets();
-  googleSheets.addHeadersIfNeeded([...headers]);
+  await googleSheets.addHeadersIfNeeded([...headers]);
 
   const rows = store.products.map(
     (product): Record<Headers, string | number | boolean> => {
@@ -47,7 +47,7 @@ function writeStoreWithProductsToSheet(store: Store) {
     }
   );
 
-  googleSheets.appendRows(rows);
+  await googleSheets.appendRows(rows);
 }
 
 async function scrapeShoeDeals() {
@@ -57,7 +57,7 @@ async function scrapeShoeDeals() {
   await googleSheets.clearSheet();
 
   const oliunid = await scrapeOliunid();
-  writeStoreWithProductsToSheet(oliunid);
+  await writeStoreWithProductsToSheet(oliunid);
 }
 
 // https://www.oliunid.com/eu/footwear/climbing-shoes
