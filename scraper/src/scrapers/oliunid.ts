@@ -55,7 +55,7 @@ async function scrapeOliunid(): Promise<Store> {
 
     productData.push(...pageProductData);
 
-    const hasNextPage = await page.evaluate(() => {
+    hasNextPage = await page.evaluate(() => {
       const nextPageButton = document.querySelector(".action.next");
       return !!nextPageButton;
     });
