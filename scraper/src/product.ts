@@ -7,7 +7,6 @@ class Product {
   originalPrice: string;
   discountPrice: string;
   discountPercent: number;
-  isMobileDiscount: boolean;
 
   constructor(
     url: string,
@@ -15,8 +14,7 @@ class Product {
     scrapedName: string,
     originalPrice: string,
     discountPrice: string,
-    discountPercent: number,
-    isMobileDiscount: boolean
+    discountPercent: number
   ) {
     this.url = url;
     this.image = image;
@@ -24,7 +22,35 @@ class Product {
     this.originalPrice = originalPrice;
     this.discountPrice = discountPrice;
     this.discountPercent = discountPercent;
-    this.isMobileDiscount = isMobileDiscount;
+  }
+
+  static create(
+    url: string | undefined | null,
+    image: string | undefined | null,
+    scrapedName: string | undefined | null,
+    originalPrice: string | undefined | null,
+    discountPrice: string | undefined | null,
+    discountPercent: number | undefined | null
+  ): Product | null {
+    if (
+      !url ||
+      !image ||
+      !scrapedName ||
+      !originalPrice ||
+      !discountPrice ||
+      !discountPercent
+    ) {
+      return null;
+    }
+
+    return new Product(
+      url,
+      image,
+      scrapedName,
+      originalPrice,
+      discountPrice,
+      discountPercent
+    );
   }
 
   get brand() {
