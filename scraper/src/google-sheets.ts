@@ -43,15 +43,11 @@ class GoogleSheets {
 
   async addHeadersIfNeeded(headers: string[]): Promise<void> {
     const sheet = await this.sheetPromise;
-    const rows = await sheet.getRows();
-
     await sheet.setHeaderRow(headers);
   }
 
   async addRow(row: Record<string, string | boolean | number>): Promise<void> {
     const sheet = await this.sheetPromise;
-    const rows = await sheet.getRows();
-
     await sheet.addRow(row);
   }
 
@@ -59,7 +55,6 @@ class GoogleSheets {
     rows: Record<string, string | boolean | number>[]
   ): Promise<void> {
     const sheet = await this.sheetPromise;
-
     await sheet.addRows(rows);
   }
 }
