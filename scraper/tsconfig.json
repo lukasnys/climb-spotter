@@ -16,12 +16,11 @@
     "noImplicitOverride": true,
 
     /* If transpiling with TypeScript: */
-    "module": "ESNext",
-    "moduleResolution": "node",
+    "module": "NodeNext",
     "outDir": "dist",
     "sourceMap": true,
 
-    /* If your code doesn't run in the DOM: */
-    "lib": ["es2022", "DOM"]
+    /* If your code runs in the DOM: */
+    "lib": ["es2022", "dom"]
   }
 }
