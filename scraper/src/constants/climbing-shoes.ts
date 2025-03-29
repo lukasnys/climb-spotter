@@ -188,6 +188,7 @@ const SHOES: Record<Brand, string[]> = {
     "Kataki",
     "Katana Lace",
     "Katana",
+    "Gripit",
     "Genius",
     "Futura",
     "Finale",
@@ -277,6 +278,7 @@ const SHOES: Record<Brand, string[]> = {
   ],
   [BRANDS.SALTIC]: [],
   [BRANDS.SCARPA]: [
+    "Velocity",
     "Veloce Lace",
     "Veloce",
     "Vapor V",
@@ -349,6 +351,7 @@ const SHOES: Record<Brand, string[]> = {
     "Lati",
     "Inti",
     "Indalo",
+    "Iati",
     "Aqua+",
     "Arai",
   ],
