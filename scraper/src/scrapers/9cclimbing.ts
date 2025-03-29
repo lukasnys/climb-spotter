@@ -2,6 +2,7 @@ import puppeteer, { Page } from "puppeteer";
 import { Retailer } from "../retailer.js";
 import {
   convertDataToProducts,
+  createRetailerScraper,
   hasNextPageAvailable,
   RawProductData,
 } from "./index.js";
@@ -10,26 +11,13 @@ import { logger } from "../utils/logger.js";
 const BASE_URL = "https://9cclimbing.be/en/collections/climbing-shoes";
 
 export async function scrape9cClimbing() {
-  logger.info("Start scraping 9c Climbing...");
-  const browser = await puppeteer.launch({
-    headless: true,
-    defaultViewport: { width: 1920, height: 1080 },
-  });
+  const scraper = createRetailerScraper(
+    "9c Climbing",
+    "EUR",
+    "https://9cclimbing.be/"
+  );
 
-  try {
-    const page = await browser.newPage();
-    const allProductData = await scrapeAllPages(page);
-    const products = convertDataToProducts(allProductData);
-
-    return new Retailer(
-      "9c Climbing",
-      "EUR",
-      "https://9cclimbing.be/",
-      products
-    );
-  } finally {
-    await browser.close();
-  }
+  return scraper.scrape(scrapeAllPages);
 }
 
 async function scrapeAllPages(page: Page) {

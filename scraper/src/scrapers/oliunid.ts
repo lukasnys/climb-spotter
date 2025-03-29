@@ -1,7 +1,7 @@
-import puppeteer, { Page } from "puppeteer";
+import { Page } from "puppeteer";
 import { Retailer } from "../retailer.js";
 import {
-  convertDataToProducts,
+  createRetailerScraper,
   hasNextPageAvailable,
   RawProductData,
 } from "./index.js";
@@ -10,21 +10,13 @@ import { logger } from "../utils/logger.js";
 const BASE_URL = "https://www.oliunid.com/eu/footwear/climbing-shoes";
 
 export async function scrapeOliunid(): Promise<Retailer> {
-  logger.info("Start scraping Oliunid...");
-  const browser = await puppeteer.launch({
-    headless: true,
-    defaultViewport: { width: 1920, height: 1080 },
-  });
+  const scraper = createRetailerScraper(
+    "Oliunid",
+    "EUR",
+    "https://www.oliunid.com/"
+  );
 
-  try {
-    const page = await browser.newPage();
-    const allProductData = await scrapeAllPages(page);
-    const products = convertDataToProducts(allProductData);
-
-    return new Retailer("Oliunid", "EUR", "https://www.oliunid.com/", products);
-  } finally {
-    await browser.close();
-  }
+  return scraper.scrape(scrapeAllPages);
 }
 
 async function scrapeAllPages(page: Page) {

@@ -1,5 +1,7 @@
-import { Page } from "puppeteer";
+import puppeteer, { Page } from "puppeteer";
 import { Product } from "../product.js";
+import { logger } from "../utils/logger.js";
+import { Retailer } from "../retailer.js";
 
 declare global {
   interface Element {
@@ -57,4 +59,34 @@ export function validateAndCreateProduct(data: RawProductData): Product | null {
   }
 
   return new Product(url, image, scrapedName, originalPrice, discountPrice);
+}
+
+export function createRetailerScraper(
+  name: string,
+  currency: string,
+  url: string
+) {
+  return {
+    scrape: async (
+      scrapeAllPagesFn: (page: Page) => Promise<RawProductData[]>
+    ) => {
+      logger.info(`Scraping ${name}...`);
+      const browser = await puppeteer.launch({
+        headless: true,
+        defaultViewport: { width: 1280, height: 800 },
+      });
+
+      try {
+        const page = await browser.newPage();
+
+        const allProductData = await scrapeAllPagesFn(page);
+
+        const products = convertDataToProducts(allProductData);
+
+        return new Retailer(name, currency, url, products);
+      } finally {
+        await browser.close();
+      }
+    },
+  };
 }

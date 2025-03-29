@@ -2,6 +2,7 @@ import puppeteer, { Page } from "puppeteer";
 import { Retailer } from "../retailer.js";
 import {
   convertDataToProducts,
+  createRetailerScraper,
   hasNextPageAvailable,
   RawProductData,
 } from "./index.js";
@@ -10,27 +11,13 @@ import { logger } from "../utils/logger.js";
 const BASE_URL = "https://www.bergfreunde.eu/climbing-shoes";
 
 export async function scrapeBergfreunde(): Promise<Retailer> {
-  logger.info("Start scraping Bergfreunde...");
+  const scraper = createRetailerScraper(
+    "Bergfreunde",
+    "EUR",
+    "https://www.bergfreunde.eu/"
+  );
 
-  const browser = await puppeteer.launch({
-    headless: true,
-    defaultViewport: { width: 1920, height: 1080 },
-  });
-
-  try {
-    const page = await browser.newPage();
-    const allProductData = await scrapeAllPages(page);
-    const products = convertDataToProducts(allProductData);
-
-    return new Retailer(
-      "Bergfreunde",
-      "EUR",
-      "https://www.bergfreunde.eu/",
-      products
-    );
-  } finally {
-    await browser.close();
-  }
+  return scraper.scrape(scrapeAllPages);
 }
 
 async function scrapeAllPages(page: Page) {
