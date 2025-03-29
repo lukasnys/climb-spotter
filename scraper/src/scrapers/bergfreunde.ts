@@ -5,10 +5,13 @@ import {
   hasNextPageAvailable,
   RawProductData,
 } from "./index.js";
+import { logger } from "../utils/logger.js";
 
 const BASE_URL = "https://www.bergfreunde.eu/climbing-shoes/";
 
 export async function scrapeBergfreunde(): Promise<Retailer> {
+  logger.info("Start scraping Bergfreunde...");
+
   const browser = await puppeteer.launch({
     headless: true,
     defaultViewport: { width: 1920, height: 1080 },
@@ -39,7 +42,7 @@ async function scrapeAllPages(page: Page) {
   while (hasNextPage) {
     const url = `${BASE_URL}/${currentPage}`;
     await page.goto(url, { waitUntil: "networkidle2" });
-    console.log(`Scraping page ${currentPage}...`);
+    logger.info(`Scraping page ${currentPage} with url: ${url}`);
 
     const pageProductData = await scrapeProductsFromPage(page);
     allProductData.push(...pageProductData);

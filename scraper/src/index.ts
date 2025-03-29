@@ -3,6 +3,7 @@ import { Retailer } from "./retailer.js";
 import { scrapeOliunid } from "./scrapers/oliunid.js";
 import { scrapeBergfreunde } from "./scrapers/bergfreunde.js";
 import { GoogleSheets } from "./google-sheets.js";
+import { logger } from "./utils/logger.js";
 
 const headers = [
   "insertedAt",
@@ -49,7 +50,7 @@ async function writeRetailerWithProductsToSheet(retailer: Retailer) {
 }
 
 async function scrapeShoeDeals() {
-  console.log("Hello, world!");
+  logger.info("Starting scraping process...");
 
   const googleSheets = new GoogleSheets();
   await googleSheets.clearSheet();
