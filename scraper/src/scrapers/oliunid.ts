@@ -76,20 +76,12 @@ async function scrapeProductsFromPage(page: Page): Promise<RawProductData[]> {
           ? parseFloat(discountPriceString)
           : undefined;
 
-        const discountString = element.querySelector(
-          ".discount-percentage.desktop-only"
-        )?.textContent;
-        const discountPercent = discountString
-          ? parseFloat(discountString)
-          : undefined;
-
         return {
           url,
           scrapedName,
           image,
           originalPrice,
           discountPrice,
-          discountPercent,
         };
       });
   });

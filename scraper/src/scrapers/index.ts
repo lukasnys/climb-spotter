@@ -13,7 +13,6 @@ export interface RawProductData {
   scrapedName: string | undefined | null;
   originalPrice: number | undefined | null;
   discountPrice: number | undefined | null;
-  discountPercent: number | undefined | null;
 }
 
 function isValid<T>(value: T | null | undefined): value is T {
@@ -45,32 +44,17 @@ export function convertDataToProducts(
 }
 
 export function validateAndCreateProduct(data: RawProductData): Product | null {
-  const {
-    url,
-    image,
-    scrapedName,
-    originalPrice,
-    discountPrice,
-    discountPercent,
-  } = data;
+  const { url, image, scrapedName, originalPrice, discountPrice } = data;
 
   if (
     !isValid(url) ||
     !isValid(image) ||
     !isValid(scrapedName) ||
     !isValid(originalPrice) ||
-    !isValid(discountPrice) ||
-    !isValid(discountPercent)
+    !isValid(discountPrice)
   ) {
     return null;
   }
 
-  return new Product(
-    url,
-    image,
-    scrapedName,
-    originalPrice,
-    discountPrice,
-    discountPercent
-  );
+  return new Product(url, image, scrapedName, originalPrice, discountPrice);
 }

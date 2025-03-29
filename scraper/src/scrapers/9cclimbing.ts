@@ -61,7 +61,8 @@ async function scrapeProductsFromPage(page: Page): Promise<RawProductData[]> {
     return elements
       .filter((element) => !!element.querySelector(".price--on-sale"))
       .map((element) => {
-        const url = element.querySelector("a")?.getAttribute("href");
+        const urlPostfix = element.querySelector("a")?.getAttribute("href");
+        const url = `https://9cclimbing.be${urlPostfix}`;
         const scrapedBrand =
           element.querySelector(".price__vendor dd")?.innerText;
         const name = element.querySelector(".product-card__title")?.innerText;
@@ -83,8 +84,12 @@ async function scrapeProductsFromPage(page: Page): Promise<RawProductData[]> {
           }
         };
 
-        const originalPriceEl = element.querySelector(".price-item--regular");
-        const discountPriceEl = element.querySelector(".price-item--sale");
+        const originalPriceEl = element.querySelector(
+          ".price__sale .price-item--regular"
+        );
+        const discountPriceEl = element.querySelector(
+          ".price__sale .price-item--sale"
+        );
 
         const originalPriceString = getPrice(originalPriceEl);
         const discountPriceString = getPrice(discountPriceEl);
@@ -96,15 +101,12 @@ async function scrapeProductsFromPage(page: Page): Promise<RawProductData[]> {
           ? parseFloat(discountPriceString.replace(",", "."))
           : undefined;
 
-        const discountPercent = 20;
-
         return {
           url,
           scrapedName,
           image,
           originalPrice,
           discountPrice,
-          discountPercent,
         };
       });
   });

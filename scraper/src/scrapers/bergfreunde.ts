@@ -100,20 +100,12 @@ async function scrapeProductsFromPage(page: Page): Promise<RawProductData[]> {
         const originalPrice = safeParseFloat(originalPriceString);
         const discountPrice = safeParseFloat(discountPriceString);
 
-        const discountString = element
-          .querySelector('[data-codecept="discountBadge"]')
-          ?.textContent?.trim();
-        const discountPercent = discountString
-          ? parseFloat(discountString)
-          : undefined;
-
         return {
           url,
           scrapedName,
           image,
           originalPrice,
           discountPrice,
-          discountPercent,
         };
       });
   });

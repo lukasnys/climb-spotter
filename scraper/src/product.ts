@@ -6,22 +6,27 @@ export class Product {
   scrapedName: string;
   originalPrice: number;
   discountPrice: number;
-  discountPercent: number;
 
   constructor(
     url: string,
     image: string,
     scrapedName: string,
     originalPrice: number,
-    discountPrice: number,
-    discountPercent: number
+    discountPrice: number
   ) {
     this.url = url;
     this.image = image;
     this.scrapedName = scrapedName;
     this.originalPrice = originalPrice;
     this.discountPrice = discountPrice;
-    this.discountPercent = discountPercent;
+  }
+
+  get discountPercent(): number {
+    if (this.originalPrice === 0) return 0;
+
+    return (
+      ((this.originalPrice - this.discountPrice) / this.originalPrice) * 100
+    );
   }
 
   get brand() {
