@@ -8,8 +8,8 @@ interface ScrapedProductData {
   url: string | undefined | null;
   name: string | undefined | null;
   image: string | undefined | null;
-  originalPrice: string | undefined | null;
-  discountPrice: string | undefined | null;
+  originalPrice: number | undefined | null;
+  discountPrice: number | undefined | null;
   discount: number | undefined | null;
 }
 
@@ -74,12 +74,19 @@ async function scrapeProductsFromPage(
           ?.textContent?.trim();
         const image = element.querySelector("img")?.getAttribute("data-src");
 
-        const originalPrice = element
+        const originalPriceString = element
           .querySelector(".original-price-wrapper [data-price-amount]")
           ?.getAttribute("data-price-amount");
-        const discountPrice = element
+        const discountPriceString = element
           .querySelector(".normal-price [data-price-amount]")
           ?.getAttribute("data-price-amount");
+
+        const originalPrice = originalPriceString
+          ? parseFloat(originalPriceString)
+          : undefined;
+        const discountPrice = discountPriceString
+          ? parseFloat(discountPriceString)
+          : undefined;
 
         const discountString = element.querySelector(
           ".discount-percentage.desktop-only"

@@ -4,16 +4,16 @@ class Product {
   url: string;
   image: string;
   scrapedName: string;
-  originalPrice: string;
-  discountPrice: string;
+  originalPrice: number;
+  discountPrice: number;
   discountPercent: number;
 
   constructor(
     url: string,
     image: string,
     scrapedName: string,
-    originalPrice: string,
-    discountPrice: string,
+    originalPrice: number,
+    discountPrice: number,
     discountPercent: number
   ) {
     this.url = url;
@@ -28,8 +28,8 @@ class Product {
     url: string | undefined | null,
     image: string | undefined | null,
     scrapedName: string | undefined | null,
-    originalPrice: string | undefined | null,
-    discountPrice: string | undefined | null,
+    originalPrice: number | undefined | null,
+    discountPrice: number | undefined | null,
     discountPercent: number | undefined | null
   ): Product | null {
     if (
