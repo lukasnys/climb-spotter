@@ -7,7 +7,7 @@ import {
 } from "./index.js";
 import { logger } from "../utils/logger.js";
 
-const BASE_URL = "https://www.bergfreunde.eu/climbing-shoes/";
+const BASE_URL = "https://www.bergfreunde.eu/climbing-shoes";
 
 export async function scrapeBergfreunde(): Promise<Retailer> {
   logger.info("Start scraping Bergfreunde...");
