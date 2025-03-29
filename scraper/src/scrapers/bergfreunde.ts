@@ -1,10 +1,9 @@
 import puppeteer, { Page } from "puppeteer";
 import { Retailer } from "../retailer.js";
-import { Product } from "../product.js";
 import {
+  convertDataToProducts,
   hasNextPageAvailable,
   RawProductData,
-  validateAndCreateProduct,
 } from "./index.js";
 
 const BASE_URL = "https://www.bergfreunde.eu/climbing-shoes/";
@@ -18,7 +17,7 @@ export async function scrapeBergfreunde(): Promise<Retailer> {
   try {
     const page = await browser.newPage();
     const allProductData = await scrapeAllPages(page);
-    const products = convertToProducts(allProductData);
+    const products = convertDataToProducts(allProductData);
 
     return new Retailer(
       "Bergfreunde",
@@ -115,10 +114,4 @@ async function scrapeProductsFromPage(page: Page): Promise<RawProductData[]> {
         };
       });
   });
-}
-
-function convertToProducts(productData: RawProductData[]): Product[] {
-  return productData
-    .map((product) => validateAndCreateProduct(product))
-    .filter((product) => product !== null);
 }

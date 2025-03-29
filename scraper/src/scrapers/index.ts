@@ -30,6 +30,14 @@ export function hasNextPageAvailable(
   }, selector);
 }
 
+export function convertDataToProducts(
+  productData: RawProductData[]
+): Product[] {
+  return productData
+    .map((product) => validateAndCreateProduct(product))
+    .filter((product) => product !== null) as Product[];
+}
+
 export function validateAndCreateProduct(data: RawProductData): Product | null {
   const {
     url,
