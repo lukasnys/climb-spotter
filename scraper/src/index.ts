@@ -2,6 +2,7 @@ import "dotenv/config";
 import GoogleSheets = require("./google-sheets");
 import Store = require("./store");
 import scrapeOliunid = require("./scrapers/oliunid");
+import scrapeBergfreunde = require("./scrapers/bergfreunde");
 
 const headers = [
   "insertedAt",
@@ -55,6 +56,9 @@ async function scrapeShoeDeals() {
 
   const oliunid = await scrapeOliunid();
   await writeStoreWithProductsToSheet(oliunid);
+
+  const bergfreunde = await scrapeBergfreunde();
+  await writeStoreWithProductsToSheet(bergfreunde);
 }
 
 scrapeShoeDeals();
