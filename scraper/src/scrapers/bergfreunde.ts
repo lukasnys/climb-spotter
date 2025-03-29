@@ -1,5 +1,5 @@
 import puppeteer, { Page } from "puppeteer";
-import { Store } from "../store.js";
+import { Retailer } from "../retailer.js";
 import { Product } from "../product.js";
 
 const BASE_URL = "https://www.bergfreunde.eu/climbing-shoes/";
@@ -13,7 +13,7 @@ export interface ScrapedProductData {
   discount: number | undefined | null;
 }
 
-export async function scrapeBergfreunde(): Promise<Store> {
+export async function scrapeBergfreunde(): Promise<Retailer> {
   const browser = await puppeteer.launch({
     headless: true,
     defaultViewport: { width: 1920, height: 1080 },
@@ -24,7 +24,7 @@ export async function scrapeBergfreunde(): Promise<Store> {
     const allProductData = await scrapeAllPages(page);
     const products = convertToProducts(allProductData);
 
-    return new Store(
+    return new Retailer(
       "Bergfreunde",
       "EUR",
       "https://www.bergfreunde.eu/",

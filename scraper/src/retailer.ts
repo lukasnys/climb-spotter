@@ -1,6 +1,6 @@
 import { Product } from "./product.js";
 
-export class Store {
+export class Retailer {
   name: string;
   currency: string;
   url: string;

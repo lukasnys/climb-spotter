@@ -1,14 +1,14 @@
 import "dotenv/config";
-import { Store } from "./store.js";
+import { Retailer } from "./retailer.js";
 import { scrapeOliunid } from "./scrapers/oliunid.js";
 import { scrapeBergfreunde } from "./scrapers/bergfreunde.js";
 import { GoogleSheets } from "./google-sheets.js";
 
 const headers = [
   "insertedAt",
-  "storeName",
-  "storeCurrency",
-  "storeUrl",
+  "retailerName",
+  "retailerCurrency",
+  "retailerUrl",
   "productUrl",
   "productImage",
   "productScrapedName",
@@ -21,17 +21,17 @@ const headers = [
 ] as const;
 type Headers = (typeof headers)[number];
 
-async function writeStoreWithProductsToSheet(store: Store) {
+async function writeRetailerWithProductsToSheet(retailer: Retailer) {
   const googleSheets = new GoogleSheets();
   await googleSheets.addHeadersIfNeeded([...headers]);
 
-  const rows = store.products.map(
+  const rows = retailer.products.map(
     (product): Record<Headers, string | number | boolean> => {
       return {
         insertedAt: new Date().toISOString(),
-        storeName: store.name,
-        storeCurrency: store.currency,
-        storeUrl: store.url,
+        retailerName: retailer.name,
+        retailerCurrency: retailer.currency,
+        retailerUrl: retailer.url,
         productUrl: product.url,
         productImage: product.image,
         productScrapedName: product.scrapedName,
@@ -55,10 +55,10 @@ async function scrapeShoeDeals() {
   await googleSheets.clearSheet();
 
   const oliunid = await scrapeOliunid();
-  await writeStoreWithProductsToSheet(oliunid);
+  await writeRetailerWithProductsToSheet(oliunid);
 
   const bergfreunde = await scrapeBergfreunde();
-  await writeStoreWithProductsToSheet(bergfreunde);
+  await writeRetailerWithProductsToSheet(bergfreunde);
 }
 
 scrapeShoeDeals();

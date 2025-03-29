@@ -1,5 +1,5 @@
 import puppeteer, { Page } from "puppeteer";
-import { Store } from "../store.js";
+import { Retailer } from "../retailer.js";
 import { Product } from "../product.js";
 
 const BASE_URL = "https://www.oliunid.com/eu/footwear/climbing-shoes";
@@ -13,7 +13,7 @@ interface ScrapedProductData {
   discount: number | undefined | null;
 }
 
-export async function scrapeOliunid(): Promise<Store> {
+export async function scrapeOliunid(): Promise<Retailer> {
   const browser = await puppeteer.launch({
     headless: true,
     defaultViewport: { width: 1920, height: 1080 },
@@ -24,7 +24,7 @@ export async function scrapeOliunid(): Promise<Store> {
     const allProductData = await scrapeAllPages(page);
     const products = convertToProducts(allProductData);
 
-    return new Store("Oliunid", "EUR", "https://www.oliunid.com/", products);
+    return new Retailer("Oliunid", "EUR", "https://www.oliunid.com/", products);
   } finally {
     await browser.close();
   }
