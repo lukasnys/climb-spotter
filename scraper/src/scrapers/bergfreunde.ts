@@ -1,17 +1,9 @@
 import puppeteer, { Page } from "puppeteer";
 import { Retailer } from "../retailer.js";
 import { Product } from "../product.js";
+import { RawProductData, validateAndCreateProduct } from "./index.js";
 
 const BASE_URL = "https://www.bergfreunde.eu/climbing-shoes/";
-
-export interface ScrapedProductData {
-  url: string | undefined | null;
-  name: string | undefined | null;
-  image: string | undefined | null;
-  originalPrice: number | undefined | null;
-  discountPrice: number | undefined | null;
-  discount: number | undefined | null;
-}
 
 export async function scrapeBergfreunde(): Promise<Retailer> {
   const browser = await puppeteer.launch({
@@ -36,7 +28,7 @@ export async function scrapeBergfreunde(): Promise<Retailer> {
 }
 
 async function scrapeAllPages(page: Page) {
-  const allProductData: ScrapedProductData[] = [];
+  const allProductData: RawProductData[] = [];
 
   let currentPage = 1;
   let hasNextPage = true;
@@ -63,9 +55,7 @@ async function hasNextPageAvailable(page: Page): Promise<boolean> {
   });
 }
 
-async function scrapeProductsFromPage(
-  page: Page
-): Promise<ScrapedProductData[]> {
+async function scrapeProductsFromPage(page: Page): Promise<RawProductData[]> {
   return await page.evaluate(() => {
     const elements = Array.from(document.querySelectorAll(".product-item"));
 
@@ -87,7 +77,7 @@ async function scrapeProductsFromPage(
           ?.replace(/\s+/g, " ")
           ?.trim();
 
-        const name = `${brand} ${product}`;
+        const scrapedName = `${brand} ${product}`;
 
         const image = element
           .querySelector("img.product-image")
@@ -114,26 +104,24 @@ async function scrapeProductsFromPage(
         const discountString = element
           .querySelector('[data-codecept="discountBadge"]')
           ?.textContent?.trim();
-        const discount = discountString
+        const discountPercent = discountString
           ? parseFloat(discountString)
           : undefined;
 
-        return { url, name, image, originalPrice, discountPrice, discount };
+        return {
+          url,
+          scrapedName,
+          image,
+          originalPrice,
+          discountPrice,
+          discountPercent,
+        };
       });
   });
 }
 
-function convertToProducts(productData: ScrapedProductData[]): Product[] {
+function convertToProducts(productData: RawProductData[]): Product[] {
   return productData
-    .map((product) =>
-      Product.create(
-        product.url,
-        product.image,
-        product.name,
-        product.originalPrice,
-        product.discountPrice,
-        product.discount
-      )
-    )
+    .map((product) => validateAndCreateProduct(product))
     .filter((product) => product !== null);
 }

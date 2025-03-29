@@ -24,35 +24,6 @@ export class Product {
     this.discountPercent = discountPercent;
   }
 
-  static create(
-    url: string | undefined | null,
-    image: string | undefined | null,
-    scrapedName: string | undefined | null,
-    originalPrice: number | undefined | null,
-    discountPrice: number | undefined | null,
-    discountPercent: number | undefined | null
-  ): Product | null {
-    if (
-      !url ||
-      !image ||
-      !scrapedName ||
-      !originalPrice ||
-      !discountPrice ||
-      !discountPercent
-    ) {
-      return null;
-    }
-
-    return new Product(
-      url,
-      image,
-      scrapedName,
-      originalPrice,
-      discountPrice,
-      discountPercent
-    );
-  }
-
   get brand() {
     const brands = Object.values(BRANDS);
 
