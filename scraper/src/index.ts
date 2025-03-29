@@ -4,6 +4,7 @@ import { scrapeOliunid } from "./scrapers/oliunid.js";
 import { scrapeBergfreunde } from "./scrapers/bergfreunde.js";
 import { GoogleSheets } from "./google-sheets.js";
 import { logger } from "./utils/logger.js";
+import { scrape9cClimbing } from "./scrapers/9cclimbing.js";
 
 const headers = [
   "insertedAt",
@@ -60,6 +61,9 @@ async function scrapeShoeDeals() {
 
   const bergfreunde = await scrapeBergfreunde();
   await writeRetailerWithProductsToSheet(bergfreunde);
+
+  const ninecClimbing = await scrape9cClimbing();
+  await writeRetailerWithProductsToSheet(ninecClimbing);
 }
 
 scrapeShoeDeals();
