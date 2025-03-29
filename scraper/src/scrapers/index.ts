@@ -1,3 +1,4 @@
+import { Page } from "puppeteer";
 import { Product } from "../product.js";
 
 export interface RawProductData {
@@ -17,6 +18,16 @@ function isValid<T>(value: T | null | undefined): value is T {
   if (typeof value === "number") return !isNaN(value) && value > 0;
 
   return true;
+}
+
+export function hasNextPageAvailable(
+  page: Page,
+  selector: string
+): Promise<boolean> {
+  return page.evaluate((selector) => {
+    const nextPageButton = document.querySelector(selector);
+    return !!nextPageButton;
+  }, selector);
 }
 
 export function validateAndCreateProduct(data: RawProductData): Product | null {

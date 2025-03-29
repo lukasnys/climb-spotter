@@ -1,7 +1,11 @@
 import puppeteer, { Page } from "puppeteer";
 import { Retailer } from "../retailer.js";
 import { Product } from "../product.js";
-import { RawProductData, validateAndCreateProduct } from "./index.js";
+import {
+  hasNextPageAvailable,
+  RawProductData,
+  validateAndCreateProduct,
+} from "./index.js";
 
 const BASE_URL = "https://www.bergfreunde.eu/climbing-shoes/";
 
@@ -41,18 +45,11 @@ async function scrapeAllPages(page: Page) {
     const pageProductData = await scrapeProductsFromPage(page);
     allProductData.push(...pageProductData);
 
-    hasNextPage = await hasNextPageAvailable(page);
+    hasNextPage = await hasNextPageAvailable(page, "a[title='next']");
     currentPage++;
   }
 
   return allProductData;
-}
-
-async function hasNextPageAvailable(page: Page): Promise<boolean> {
-  return await page.evaluate(() => {
-    const nextPageButton = document.querySelector("a[title='next']");
-    return !!nextPageButton;
-  });
 }
 
 async function scrapeProductsFromPage(page: Page): Promise<RawProductData[]> {
