@@ -10,6 +10,7 @@ import { logger } from "../utils/logger.js";
 const BASE_URL = "https://9cclimbing.be/en/collections/climbing-shoes";
 
 export async function scrape9cClimbing() {
+  logger.info("Start scraping 9c Climbing...");
   const browser = await puppeteer.launch({
     headless: true,
     defaultViewport: { width: 1920, height: 1080 },
@@ -69,7 +70,10 @@ async function scrapeProductsFromPage(page: Page): Promise<RawProductData[]> {
 
         const scrapedName = `${scrapedBrand} ${name}`;
 
-        const image = element.querySelector("img")?.getAttribute("src");
+        const imageUrl = element.querySelector("img")?.getAttribute("src");
+        const image = imageUrl?.startsWith("//")
+          ? `https:${imageUrl}`
+          : imageUrl;
 
         const getPrice = (element: Element | null) => {
           const full = element?.innerText?.replace(/[^0-9,]/g, "");
