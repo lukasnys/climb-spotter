@@ -39,6 +39,7 @@ async function scrapeAllPages(page: puppeteer.Page) {
   while (hasNextPage) {
     const url = `${BASE_URL}?p=${currentPage}`;
     await page.goto(url, { waitUntil: "networkidle2" });
+    console.log(`Scraping page ${currentPage}...`);
 
     const pageProductData = await scrapeProductsFromPage(page);
     allProductData.push(...pageProductData);
