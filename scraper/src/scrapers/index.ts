@@ -1,6 +1,12 @@
 import { Page } from "puppeteer";
 import { Product } from "../product.js";
 
+declare global {
+  interface Element {
+    innerText?: string;
+  }
+}
+
 export interface RawProductData {
   url: string | undefined | null;
   image: string | undefined | null;
