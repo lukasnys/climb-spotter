@@ -1,4 +1,4 @@
-const BRANDS = {
+export const BRANDS = {
   ACOPA: "Acopa",
   ALPIDEX: "Alpidex",
   ASAKUSA: "Asakusa",
@@ -30,9 +30,9 @@ const BRANDS = {
   UNPARALLEL: "Unparallel",
   WILD_CLIMB: "Wild Climb",
 } as const;
-type Brand = (typeof BRANDS)[keyof typeof BRANDS];
+export type Brand = (typeof BRANDS)[keyof typeof BRANDS];
 
-const SHOES: Record<Brand, string[]> = {
+export const SHOES: Record<Brand, string[]> = {
   [BRANDS.ACOPA]: [
     "SPECTRE",
     "SHOT",
@@ -439,5 +439,3 @@ const SHOES: Record<Brand, string[]> = {
     "Bat",
   ],
 };
-
-export = { BRANDS, SHOES };

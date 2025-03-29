@@ -1,11 +1,13 @@
-import googleauthlibrary = require("google-auth-library");
-import googleSpreadsheet = require("google-spreadsheet");
-import googleapis = require("googleapis");
+import { JWT } from "google-auth-library";
+import {
+  GoogleSpreadsheet,
+  GoogleSpreadsheetWorksheet,
+} from "google-spreadsheet";
 
 const SPREADSHEET_SHEET_NAME = "data";
 
-class GoogleSheets {
-  private sheetPromise: Promise<googleSpreadsheet.GoogleSpreadsheetWorksheet>;
+export class GoogleSheets {
+  private sheetPromise: Promise<GoogleSpreadsheetWorksheet>;
 
   constructor() {
     if (!process.env.GOOGLE_SPREADSHEET_ID) {
@@ -20,16 +22,13 @@ class GoogleSheets {
       throw new Error("GOOGLE_CLIENT_EMAIL environment variable is not set");
     }
 
-    const jwt = new googleauthlibrary.JWT({
+    const jwt = new JWT({
       email: process.env.GOOGLE_CLIENT_EMAIL,
       key: process.env.GOOGLE_PRIVATE_KEY,
       scopes: ["https://www.googleapis.com/auth/spreadsheets"],
     });
 
-    const doc = new googleSpreadsheet.GoogleSpreadsheet(
-      process.env.GOOGLE_SPREADSHEET_ID,
-      jwt
-    );
+    const doc = new GoogleSpreadsheet(process.env.GOOGLE_SPREADSHEET_ID, jwt);
 
     this.sheetPromise = doc
       .loadInfo()
@@ -58,5 +57,3 @@ class GoogleSheets {
     await sheet.addRows(rows);
   }
 }
-
-export = GoogleSheets;

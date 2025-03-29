@@ -1,6 +1,6 @@
-import CLIMBING_SHOES = require("./constants/climbing-shoes");
+import { BRANDS, SHOES } from "./constants/climbing-shoes.js";
 
-class Product {
+export class Product {
   url: string;
   image: string;
   scrapedName: string;
@@ -54,7 +54,7 @@ class Product {
   }
 
   get brand() {
-    const brands = Object.values(CLIMBING_SHOES.BRANDS);
+    const brands = Object.values(BRANDS);
 
     return (
       brands.find((brand) =>
@@ -67,8 +67,7 @@ class Product {
     const brand = this.brand;
     if (!brand) return "";
 
-    const shoes =
-      CLIMBING_SHOES.SHOES[brand as keyof typeof CLIMBING_SHOES.SHOES];
+    const shoes = SHOES[brand as keyof typeof SHOES];
 
     // Try to find an exact match first
     return (
@@ -105,5 +104,3 @@ class Product {
     return "U";
   }
 }
-
-export = Product;

@@ -1,10 +1,10 @@
-import puppeteer = require("puppeteer");
-import Store = require("../store");
-import Product = require("../product");
+import puppeteer, { Page } from "puppeteer";
+import { Store } from "../store.js";
+import { Product } from "../product.js";
 
 const BASE_URL = "https://www.bergfreunde.eu/climbing-shoes/";
 
-interface ScrapedProductData {
+export interface ScrapedProductData {
   url: string | undefined | null;
   name: string | undefined | null;
   image: string | undefined | null;
@@ -13,7 +13,7 @@ interface ScrapedProductData {
   discount: number | undefined | null;
 }
 
-async function scrapeBergfreunde(): Promise<Store> {
+export async function scrapeBergfreunde(): Promise<Store> {
   const browser = await puppeteer.launch({
     headless: true,
     defaultViewport: { width: 1920, height: 1080 },
@@ -35,7 +35,7 @@ async function scrapeBergfreunde(): Promise<Store> {
   }
 }
 
-async function scrapeAllPages(page: puppeteer.Page) {
+async function scrapeAllPages(page: Page) {
   const allProductData: ScrapedProductData[] = [];
 
   let currentPage = 1;
@@ -56,7 +56,7 @@ async function scrapeAllPages(page: puppeteer.Page) {
   return allProductData;
 }
 
-async function hasNextPageAvailable(page: puppeteer.Page): Promise<boolean> {
+async function hasNextPageAvailable(page: Page): Promise<boolean> {
   return await page.evaluate(() => {
     const nextPageButton = document.querySelector("a[title='next']");
     return !!nextPageButton;
@@ -64,7 +64,7 @@ async function hasNextPageAvailable(page: puppeteer.Page): Promise<boolean> {
 }
 
 async function scrapeProductsFromPage(
-  page: puppeteer.Page
+  page: Page
 ): Promise<ScrapedProductData[]> {
   return await page.evaluate(() => {
     const elements = Array.from(document.querySelectorAll(".product-item"));
@@ -137,5 +137,3 @@ function convertToProducts(productData: ScrapedProductData[]): Product[] {
     )
     .filter((product) => product !== null);
 }
-
-export = scrapeBergfreunde;

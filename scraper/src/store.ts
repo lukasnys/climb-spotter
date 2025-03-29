@@ -1,6 +1,6 @@
-import Product = require("./product");
+import { Product } from "./product.js";
 
-class Store {
+export class Store {
   name: string;
   currency: string;
   url: string;
@@ -18,5 +18,3 @@ class Store {
     this.products = products;
   }
 }
-
-export = Store;

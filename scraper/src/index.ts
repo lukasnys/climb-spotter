@@ -1,8 +1,8 @@
 import "dotenv/config";
-import GoogleSheets = require("./google-sheets");
-import Store = require("./store");
-import scrapeOliunid = require("./scrapers/oliunid");
-import scrapeBergfreunde = require("./scrapers/bergfreunde");
+import { Store } from "./store.js";
+import { scrapeOliunid } from "./scrapers/oliunid.js";
+import { scrapeBergfreunde } from "./scrapers/bergfreunde.js";
+import { GoogleSheets } from "./google-sheets.js";
 
 const headers = [
   "insertedAt",
