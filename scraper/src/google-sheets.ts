@@ -4,12 +4,10 @@ import {
   GoogleSpreadsheetWorksheet,
 } from "google-spreadsheet";
 
-const SPREADSHEET_SHEET_NAME = "data";
-
 export class GoogleSheets {
   private sheetPromise: Promise<GoogleSpreadsheetWorksheet>;
 
-  constructor() {
+  constructor(spreadsheetName: string) {
     if (!process.env.GOOGLE_SPREADSHEET_ID) {
       throw new Error("GOOGLE_SPREADSHEET_ID environment variable is not set");
     }
@@ -31,9 +29,9 @@ export class GoogleSheets {
     const doc = new GoogleSpreadsheet(process.env.GOOGLE_SPREADSHEET_ID, jwt);
 
     this.sheetPromise = doc.loadInfo().then(() => {
-      const sheet = doc.sheetsByTitle[SPREADSHEET_SHEET_NAME];
+      const sheet = doc.sheetsByTitle[spreadsheetName];
       if (!sheet) {
-        throw new Error(`Sheet with title ${SPREADSHEET_SHEET_NAME} not found`);
+        throw new Error(`Sheet with title ${spreadsheetName} not found`);
       }
       return sheet;
     });

@@ -53,7 +53,7 @@ async function writeRetailerWithProductsToSheet(retailer: Retailer) {
 async function scrapeShoeDeals() {
   logger.info("Starting scraping process...");
 
-  const googleSheets = new GoogleSheets();
+  const googleSheets = new GoogleSheets("data");
   await googleSheets.clearSheet();
 
   const scrapers = [scrapeOliunid, scrapeBergfreunde, scrape9cClimbing];
