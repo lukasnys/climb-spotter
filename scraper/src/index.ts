@@ -56,15 +56,14 @@ async function scrapeShoeDeals() {
   const googleSheets = new GoogleSheets();
   await googleSheets.clearSheet();
 
-  const [oliunid, bergfreunde, ninecClimbing] = await Promise.all([
-    scrapeOliunid(),
-    scrapeBergfreunde(),
-    scrape9cClimbing(),
-  ]);
+  const scrapers = [scrapeOliunid, scrapeBergfreunde, scrape9cClimbing];
 
-  await writeRetailerWithProductsToSheet(oliunid);
-  await writeRetailerWithProductsToSheet(bergfreunde);
-  await writeRetailerWithProductsToSheet(ninecClimbing);
+  const scrapePromises = scrapers.map(async (scraper) => {
+    const data = await scraper();
+    return writeRetailerWithProductsToSheet(data);
+  });
+
+  await Promise.all(scrapePromises);
 }
 
 scrapeShoeDeals();
