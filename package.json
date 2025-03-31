@@ -1,0 +1,10 @@
+{
+  "name": "climbing-shoe-deals",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "pnpm -r run build",
+    "dev": "pnpm -r run dev"
+  },
+  "packageManager": "pnpm@9.5.0"
+}
