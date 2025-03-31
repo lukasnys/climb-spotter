@@ -35,6 +35,9 @@ importers:
 
   scraper:
     dependencies:
+      '@climbing-deals/shared':
+        specifier: workspace:*
+        version: link:../shared
       dotenv:
         specifier: ^16.4.7
         version: 16.4.7
@@ -50,6 +53,31 @@ importers:
       puppeteer:
         specifier: ^24.4.0
         version: 24.4.0(typescript@5.8.2)
+    devDependencies:
+      '@eslint/js':
+        specifier: ^9.23.0
+        version: 9.23.0
+      '@types/node':
+        specifier: ^22.13.14
+        version: 22.13.14
+      globals:
+        specifier: ^16.0.0
+        version: 16.0.0
+      typescript:
+        specifier: ^5.8.2
+        version: 5.8.2
+      typescript-eslint:
+        specifier: ^8.28.0
+        version: 8.29.0(eslint@9.23.0)(typescript@5.8.2)
+
+  shared:
+    dependencies:
+      google-auth-library:
+        specifier: ^9.15.1
+        version: 9.15.1
+      google-spreadsheet:
+        specifier: ^4.1.4
+        version: 4.1.4(google-auth-library@9.15.1)
     devDependencies:
       '@eslint/js':
         specifier: ^9.23.0

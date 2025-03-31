@@ -2,7 +2,7 @@ import "dotenv/config";
 import { Retailer } from "./retailer.js";
 import { scrapeOliunid } from "./scrapers/oliunid.js";
 import { scrapeBergfreunde } from "./scrapers/bergfreunde.js";
-import { GoogleSheets } from "./google-sheets.js";
+import { GoogleSheets } from "@climbing-deals/shared";
 import { logger } from "./utils/logger.js";
 import { scrape9cClimbing } from "./scrapers/9cclimbing.js";
 
@@ -53,7 +53,7 @@ async function writeRetailerWithProductsToSheet(retailer: Retailer) {
 async function scrapeShoeDeals() {
   logger.info("Starting scraping process...");
 
-  const googleSheets = new GoogleSheets("data");
+  const googleSheets = new GoogleSheets("shoes");
   await googleSheets.clearSheet();
 
   const scrapers = [scrapeOliunid, scrapeBergfreunde, scrape9cClimbing];
