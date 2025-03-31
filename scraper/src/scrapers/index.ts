@@ -1,7 +1,7 @@
 import puppeteer, { Page } from "puppeteer";
-import { Product } from "../product.js";
+import { Product } from "../Product.js";
 import { logger } from "../utils/logger.js";
-import { Retailer } from "../retailer.js";
+import { Retailer } from "../Retailer.js";
 
 declare global {
   interface Element {

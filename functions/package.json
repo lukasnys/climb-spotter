@@ -6,7 +6,9 @@
   "type": "module",
   "scripts": {
     "build": "tsc",
-    "dev:shoes": "functions-framework --target=getShoes --port 8080"
+    "dev:shoes": "functions-framework --target=getShoes --port 8080",
+    "deploy": "pnpm deploy:shoes",
+    "deploy:shoes": "gcloud functions deploy getShoes --runtime nodejs --trigger-http --allow-unauthenticated"
   },
   "keywords": [],
   "author": "",

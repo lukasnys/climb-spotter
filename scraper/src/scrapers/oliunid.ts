@@ -1,5 +1,5 @@
 import { Page } from "puppeteer";
-import { Retailer } from "../retailer.js";
+import { Retailer } from "../Retailer.js";
 import {
   createRetailerScraper,
   hasNextPageAvailable,

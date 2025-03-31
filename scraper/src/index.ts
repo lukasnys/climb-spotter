@@ -1,5 +1,5 @@
 import "dotenv/config";
-import { Retailer } from "./retailer.js";
+import { Retailer } from "./Retailer.js";
 import { scrapeOliunid } from "./scrapers/oliunid.js";
 import { scrapeBergfreunde } from "./scrapers/bergfreunde.js";
 import { GoogleSheets } from "@climbing-deals/shared";
