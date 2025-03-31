@@ -1,7 +1,6 @@
-import puppeteer, { Page } from "puppeteer";
+import { Page } from "puppeteer";
 import { Retailer } from "../retailer.js";
 import {
-  convertDataToProducts,
   createRetailerScraper,
   hasNextPageAvailable,
   RawProductData,

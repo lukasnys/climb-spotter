@@ -30,9 +30,13 @@ export class GoogleSheets {
 
     const doc = new GoogleSpreadsheet(process.env.GOOGLE_SPREADSHEET_ID, jwt);
 
-    this.sheetPromise = doc
-      .loadInfo()
-      .then(() => doc.sheetsByTitle[SPREADSHEET_SHEET_NAME]!);
+    this.sheetPromise = doc.loadInfo().then(() => {
+      const sheet = doc.sheetsByTitle[SPREADSHEET_SHEET_NAME];
+      if (!sheet) {
+        throw new Error(`Sheet with title ${SPREADSHEET_SHEET_NAME} not found`);
+      }
+      return sheet;
+    });
   }
 
   async clearSheet(): Promise<void> {
