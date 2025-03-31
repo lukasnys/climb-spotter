@@ -7,7 +7,7 @@
   "type": "module",
   "scripts": {
     "build": "tsc",
-    "dev": "build-watch"
+    "dev": "tsc -w"
   },
   "keywords": [],
   "author": "",

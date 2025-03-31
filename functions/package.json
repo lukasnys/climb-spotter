@@ -19,6 +19,7 @@
     "typescript-eslint": "^8.28.0"
   },
   "dependencies": {
+    "@climbing-deals/shared": "workspace:*",
     "@google-cloud/functions-framework": "^3.5.1",
     "dotenv": "^16.4.7"
   }

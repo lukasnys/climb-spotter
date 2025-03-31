@@ -10,6 +10,9 @@ importers:
 
   functions:
     dependencies:
+      '@climbing-deals/shared':
+        specifier: workspace:*
+        version: link:../shared
       '@google-cloud/functions-framework':
         specifier: ^3.5.1
         version: 3.5.1

@@ -52,6 +52,13 @@ export class GoogleSheets {
     await sheet.addRow(row);
   }
 
+  async getRows() {
+    const sheet = await this.sheetPromise;
+    const rows = await sheet.getRows();
+    console.log(rows);
+    return rows;
+  }
+
   async appendRows(
     rows: Record<string, string | boolean | number>[]
   ): Promise<void> {
