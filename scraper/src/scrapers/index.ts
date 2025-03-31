@@ -27,6 +27,14 @@ function isValid<T>(value: T | null | undefined): value is T {
   return true;
 }
 
+export function safeParseFloat(value: string | null | undefined) {
+  if (!value) return undefined;
+
+  const cleanedValue = value.replace(/[^0-9.,]/g, "");
+  const parsedValue = parseFloat(cleanedValue);
+  return isNaN(parsedValue) ? undefined : parsedValue;
+}
+
 export function hasNextPageAvailable(
   page: Page,
   selector: string

@@ -5,6 +5,7 @@ import {
   createRetailerScraper,
   hasNextPageAvailable,
   RawProductData,
+  safeParseFloat,
 } from "./index.js";
 import { logger } from "../utils/logger.js";
 
@@ -44,27 +45,32 @@ async function scrapeAllPages(page: Page) {
 }
 
 async function scrapeProductsFromPage(page: Page): Promise<RawProductData[]> {
-  return await page.evaluate(() => {
+  const data = await page.evaluate(() => {
     const elements = Array.from(document.querySelectorAll(".grid__item"));
 
     return elements
       .filter((element) => !!element.querySelector(".price--on-sale"))
       .map((element) => {
-        const urlPostfix = element.querySelector("a")?.getAttribute("href");
+        const LINK = "a.grid-view-item__link";
+        const BRAND = ".price__vendor dd";
+        const NAME = ".product-card__title";
+        const IMAGE = "img";
+
+        const ORIGINAL_PRICE = ".price__sale .price-item--regular";
+        const DISCOUNT_PRICE = ".price__sale .price-item--sale";
+
+        const urlPostfix = element.querySelector(LINK)?.getAttribute("href");
         const url = `https://9cclimbing.be${urlPostfix}`;
-        const scrapedBrand =
-          element.querySelector(".price__vendor dd")?.innerText;
-        const name = element.querySelector(".product-card__title")?.innerText;
+        const scrapedBrand = element.querySelector(BRAND)?.innerText;
+        const name = element.querySelector(NAME)?.innerText;
 
         const scrapedName = `${scrapedBrand} ${name}`;
 
-        const imageUrl = element.querySelector("img")?.getAttribute("src");
-        const image = imageUrl?.startsWith("//")
-          ? `https:${imageUrl}`
-          : imageUrl;
+        const image =
+          "https://" + element.querySelector(IMAGE)?.getAttribute("src");
 
         const getPrice = (element: Element | null) => {
-          const full = element?.innerText?.replace(/[^0-9,]/g, "");
+          const full = element?.innerText;
           const sup = element?.querySelector("sup")?.innerText;
 
           if (full && sup) {
@@ -76,22 +82,11 @@ async function scrapeProductsFromPage(page: Page): Promise<RawProductData[]> {
           }
         };
 
-        const originalPriceEl = element.querySelector(
-          ".price__sale .price-item--regular"
-        );
-        const discountPriceEl = element.querySelector(
-          ".price__sale .price-item--sale"
-        );
+        const originalPriceEl = element.querySelector(ORIGINAL_PRICE);
+        const discountPriceEl = element.querySelector(DISCOUNT_PRICE);
 
-        const originalPriceString = getPrice(originalPriceEl);
-        const discountPriceString = getPrice(discountPriceEl);
-
-        const originalPrice = originalPriceString
-          ? parseFloat(originalPriceString.replace(",", "."))
-          : undefined;
-        const discountPrice = discountPriceString
-          ? parseFloat(discountPriceString.replace(",", "."))
-          : undefined;
+        const originalPrice = getPrice(originalPriceEl);
+        const discountPrice = getPrice(discountPriceEl);
 
         return {
           url,
@@ -102,4 +97,10 @@ async function scrapeProductsFromPage(page: Page): Promise<RawProductData[]> {
         };
       });
   });
+
+  return data.map((product) => ({
+    ...product,
+    originalPrice: safeParseFloat(product.originalPrice),
+    discountPrice: safeParseFloat(product.discountPrice),
+  }));
 }

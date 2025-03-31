@@ -5,6 +5,7 @@ import {
   createRetailerScraper,
   hasNextPageAvailable,
   RawProductData,
+  safeParseFloat,
 } from "./index.js";
 import { logger } from "../utils/logger.js";
 
@@ -42,7 +43,7 @@ async function scrapeAllPages(page: Page) {
 }
 
 async function scrapeProductsFromPage(page: Page): Promise<RawProductData[]> {
-  return await page.evaluate(() => {
+  const data = await page.evaluate(() => {
     const elements = Array.from(document.querySelectorAll(".product-item"));
 
     return Array.from(elements)
@@ -50,42 +51,26 @@ async function scrapeProductsFromPage(page: Page): Promise<RawProductData[]> {
         (element) => !!element.querySelector("[data-codecept='strokePrice']")
       )
       .map((element) => {
-        const url = element
-          .querySelector("a.product-link")
-          ?.getAttribute("href");
+        const LINK = "a.product-link";
+        const BRAND = ".manufacturer-title";
+        const PRODUCT = ".product-title";
+        const IMAGE = "img.product-image";
+        const ORIGINAL_PRICE = "[data-codecept='strokePrice']";
+        const DISCOUNT_PRICE = "[data-codecept='currentPrice']";
 
-        const brand = element
-          .querySelector(".manufacturer-title")
-          ?.textContent?.trim();
+        const url = element.querySelector(LINK)?.getAttribute("href");
+
+        const brand = element.querySelector(BRAND)?.innerText;
         const product = element
-          .querySelector(".product-title")
-          ?.textContent?.replaceAll("\n", "")
-          ?.replace(/\s+/g, " ")
-          ?.trim();
+          .querySelector(PRODUCT)
+          ?.innerText?.replaceAll("\n", " ");
 
         const scrapedName = `${brand} ${product}`;
 
-        const image = element
-          .querySelector("img.product-image")
-          ?.getAttribute("src");
+        const image = element.querySelector(IMAGE)?.getAttribute("src");
 
-        const originalPriceString = element
-          .querySelector("[data-codecept='strokePrice']")
-          ?.textContent?.trim();
-        const discountPriceString = element
-          .querySelector("[data-codecept='currentPrice']")
-          ?.textContent?.trim();
-
-        const safeParseFloat = (value: string | undefined) => {
-          if (!value) return undefined;
-
-          const cleanedValue = value.replace(/[^0-9.,]/g, "");
-          const parsedValue = parseFloat(cleanedValue);
-          return isNaN(parsedValue) ? undefined : parsedValue;
-        };
-
-        const originalPrice = safeParseFloat(originalPriceString);
-        const discountPrice = safeParseFloat(discountPriceString);
+        const originalPrice = element.querySelector(ORIGINAL_PRICE)?.innerText;
+        const discountPrice = element.querySelector(DISCOUNT_PRICE)?.innerText;
 
         return {
           url,
@@ -96,4 +81,10 @@ async function scrapeProductsFromPage(page: Page): Promise<RawProductData[]> {
         };
       });
   });
+
+  return data.map((item) => ({
+    ...item,
+    originalPrice: safeParseFloat(item.originalPrice),
+    discountPrice: safeParseFloat(item.discountPrice),
+  }));
 }
