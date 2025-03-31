@@ -24,7 +24,7 @@ const headers = [
 type Headers = (typeof headers)[number];
 
 async function writeRetailerWithProductsToSheet(retailer: Retailer) {
-  const googleSheets = new GoogleSheets();
+  const googleSheets = new GoogleSheets("shoes");
   await googleSheets.addHeadersIfNeeded([...headers]);
 
   const rows = retailer.products.map(
