@@ -66,20 +66,18 @@ async function scrapeProductsFromPage(page: Page): Promise<RawProductData[]> {
 
         const scrapedName = `${scrapedBrand} ${name}`;
 
-        const image =
-          "https://" + element.querySelector(IMAGE)?.getAttribute("src");
+        const imageSrc = element.querySelector(IMAGE)?.getAttribute("src");
+        const image = imageSrc?.startsWith("//")
+          ? "https:" + imageSrc
+          : imageSrc;
 
         const getPrice = (element: Element | null) => {
           const full = element?.innerText;
           const sup = element?.querySelector("sup")?.innerText;
 
-          if (full && sup) {
-            return full.slice(0, full.lastIndexOf(sup)) + "," + sup;
-          } else if (full) {
-            return full;
-          } else {
-            return undefined;
-          }
+          if (!full) return undefined;
+          if (!sup) return full;
+          return full.slice(0, full.lastIndexOf(sup)) + "," + sup;
         };
 
         const originalPriceEl = element.querySelector(ORIGINAL_PRICE);
