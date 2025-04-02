@@ -1,4 +1,4 @@
 packages:
-  - "functions"
+  - "cloud-functions"
   - "scraper"
   - "shared"
