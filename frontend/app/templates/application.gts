@@ -6,6 +6,8 @@ export default Route(
   <template>
     {{pageTitle "Frontend"}}
 
+    <h1>Hello, Ember!</h1>
+
     {{outlet}}
   </template>,
 );
