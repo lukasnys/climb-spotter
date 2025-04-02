@@ -2,3 +2,4 @@ packages:
   - "cloud-functions"
   - "scraper"
   - "shared"
+  - "frontend"
