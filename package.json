@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "build": "pnpm -r run build",
+    "build:frontend": "pnpm -r --filter frontend run build",
     "dev": "pnpm -r run dev"
   },
   "packageManager": "pnpm@9.5.0"
