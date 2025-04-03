@@ -27,7 +27,7 @@ async function writeRetailerWithProductsToSheet(retailer: Retailer) {
   const googleSheets = new GoogleSheets("shoes");
   await googleSheets.addHeadersIfNeeded([...headers]);
 
-  const rows = retailer.products.map(
+  const rows = retailer.shoes.map(
     (product): Record<Headers, string | number | boolean> => {
       return {
         insertedAt: new Date().toISOString(),
@@ -37,9 +37,9 @@ async function writeRetailerWithProductsToSheet(retailer: Retailer) {
         productUrl: product.url,
         productImage: product.image,
         productScrapedName: product.scrapedName,
-        productBrand: product.brand,
-        productName: product.name,
-        productGender: product.gender,
+        productBrand: product.brand ?? "",
+        productName: product.name ?? "",
+        productGender: product.audience,
         originalPrice: product.originalPrice,
         discountPrice: product.discountPrice ?? "",
         discountPercent: product.discountPercent ?? "",
