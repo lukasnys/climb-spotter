@@ -13,8 +13,8 @@ export interface RawProductData {
   url: string | undefined | null;
   image: string | undefined | null;
   scrapedName: string | undefined | null;
-  originalPrice: number | undefined | null;
-  discountPrice: number | undefined | null;
+  originalPrice: number | undefined;
+  discountPrice: number | undefined;
 }
 
 function isValid<T>(value: T | null | undefined): value is T {
@@ -60,8 +60,7 @@ export function validateAndCreateProduct(data: RawProductData): Product | null {
     !isValid(url) ||
     !isValid(image) ||
     !isValid(scrapedName) ||
-    !isValid(originalPrice) ||
-    !isValid(discountPrice)
+    !isValid(originalPrice)
   ) {
     return null;
   }

@@ -5,14 +5,14 @@ export class Product {
   image: string;
   scrapedName: string;
   originalPrice: number;
-  discountPrice: number;
+  discountPrice: number | undefined;
 
   constructor(
     url: string,
     image: string,
     scrapedName: string,
     originalPrice: number,
-    discountPrice: number
+    discountPrice: number | undefined
   ) {
     this.url = url;
     this.image = image;
@@ -21,8 +21,9 @@ export class Product {
     this.discountPrice = discountPrice;
   }
 
-  get discountPercent(): number {
-    if (this.originalPrice === 0) return 0;
+  get discountPercent(): number | undefined {
+    if (this.originalPrice === 0) return undefined;
+    if (!this.discountPrice) return undefined;
 
     return (
       ((this.originalPrice - this.discountPrice) / this.originalPrice) * 100
