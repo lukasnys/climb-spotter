@@ -43,6 +43,7 @@ async function scrapeAllPages(page: Page) {
 }
 
 async function scrapeProductsFromPage(page: Page): Promise<RawProductData[]> {
+  await page.waitForSelector(".grid__item");
   const data = await page.evaluate(() => {
     const elements = Array.from(document.querySelectorAll(".grid__item"));
 
