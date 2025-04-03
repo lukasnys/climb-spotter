@@ -6,7 +6,7 @@ import {
   RawProductData,
   safeParseFloat,
 } from "./index.js";
-import { logger } from "@climbing-deals/shared/src/logger.js";
+import { logger } from "@climbing-deals/shared";
 
 const BASE_URL = "https://www.oliunid.com/eu/footwear/climbing-shoes";
 

@@ -6,7 +6,7 @@ import {
   RawProductData,
   safeParseFloat,
 } from "./index.js";
-import { logger } from "@climbing-deals/shared/src/logger.js";
+import { logger } from "@climbing-deals/shared";
 
 const BASE_URL = "https://www.bergfreunde.eu/climbing-shoes";
 
@@ -45,40 +45,47 @@ async function scrapeProductsFromPage(page: Page): Promise<RawProductData[]> {
   const data = await page.evaluate(() => {
     const elements = Array.from(document.querySelectorAll(".product-item"));
 
-    return Array.from(elements)
-      .filter(
-        (element) => !!element.querySelector("[data-codecept='strokePrice']")
-      )
-      .map((element) => {
-        const LINK = "a.product-link";
-        const BRAND = ".manufacturer-title";
-        const PRODUCT = ".product-title";
-        const IMAGE = "img.product-image";
-        const ORIGINAL_PRICE = "[data-codecept='strokePrice']";
-        const DISCOUNT_PRICE = "[data-codecept='currentPrice']";
+    return Array.from(elements).map((element) => {
+      const LINK = "a.product-link";
+      const BRAND = ".manufacturer-title";
+      const PRODUCT = ".product-title";
+      const IMAGE = "img.product-image";
 
-        const url = element.querySelector(LINK)?.getAttribute("href");
+      const ORIGINAL_PRICE = "[data-codecept='strokePrice']";
+      const DISCOUNT_PRICE = "[data-codecept='currentPrice']";
 
-        const brand = element.querySelector(BRAND)?.innerText;
-        const product = element
-          .querySelector(PRODUCT)
-          ?.innerText?.replaceAll("\n", " ");
+      const url = element.querySelector(LINK)?.getAttribute("href");
 
-        const scrapedName = `${brand} ${product}`;
+      const brand = element.querySelector(BRAND)?.innerText;
+      const product = element
+        .querySelector(PRODUCT)
+        ?.innerText?.replaceAll("\n", " ");
 
-        const image = element.querySelector(IMAGE)?.getAttribute("src");
+      const scrapedName = `${brand} ${product}`;
 
-        const originalPrice = element.querySelector(ORIGINAL_PRICE)?.innerText;
-        const discountPrice = element.querySelector(DISCOUNT_PRICE)?.innerText;
+      const image = element.querySelector(IMAGE)?.getAttribute("src");
 
-        return {
-          url,
-          scrapedName,
-          image,
-          originalPrice,
-          discountPrice,
-        };
-      });
+      let originalPrice: string | undefined = undefined;
+      let discountPrice: string | undefined = undefined;
+
+      const strokePriceElement = element.querySelector(ORIGINAL_PRICE);
+      const currentPriceElement = element.querySelector(DISCOUNT_PRICE);
+
+      if (strokePriceElement) {
+        originalPrice = strokePriceElement.innerText;
+        discountPrice = currentPriceElement?.innerText;
+      } else {
+        originalPrice = currentPriceElement?.innerText;
+      }
+
+      return {
+        url,
+        scrapedName,
+        image,
+        originalPrice,
+        discountPrice,
+      };
+    });
   });
 
   return data.map((item) => ({

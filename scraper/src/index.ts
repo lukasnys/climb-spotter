@@ -3,7 +3,7 @@ import { Retailer } from "./Retailer.js";
 import { scrapeOliunid } from "./scrapers/oliunid.js";
 import { scrapeBergfreunde } from "./scrapers/bergfreunde.js";
 import { GoogleSheets } from "@climbing-deals/shared";
-import { logger } from "@climbing-deals/shared/src/logger.js";
+import { logger } from "@climbing-deals/shared";
 import { scrape9cClimbing } from "./scrapers/9cclimbing.js";
 
 const headers = [
@@ -41,8 +41,8 @@ async function writeRetailerWithProductsToSheet(retailer: Retailer) {
         productName: product.name,
         productGender: product.gender,
         originalPrice: product.originalPrice,
-        discountPrice: product.discountPrice,
-        discountPercent: product.discountPercent,
+        discountPrice: product.discountPrice ?? "",
+        discountPercent: product.discountPercent ?? "",
       };
     }
   );
