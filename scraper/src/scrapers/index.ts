@@ -2,6 +2,7 @@ import puppeteer, { Page } from "puppeteer";
 import { logger } from "@climbing-deals/shared";
 import { Retailer } from "../Retailer.js";
 import { Shoe } from "../Shoe.js";
+import { z } from "zod";
 
 declare global {
   interface Element {
@@ -9,23 +10,18 @@ declare global {
   }
 }
 
-export interface RawProductData {
-  url: string | undefined | null;
-  image: string | undefined | null;
-  scrapedName: string | undefined | null;
-  originalPrice: number | undefined;
-  discountPrice: number | undefined;
-}
+const productDataSchema = z.object({
+  url: z.string().url(),
+  image: z.string().url(),
+  scrapedName: z.string(),
+  originalPrice: z.number().positive(),
+  discountPrice: z.number().positive().optional(),
+});
 
-function isValid<T>(value: T | null | undefined): value is T {
-  if (value === null || value === undefined) return false;
-
-  if (typeof value === "string") return value.trim() !== "";
-
-  if (typeof value === "number") return !isNaN(value) && value > 0;
-
-  return true;
-}
+type ProductData = z.infer<typeof productDataSchema>;
+export type RawProductData = {
+  [key in keyof ProductData]: ProductData[key] | null | undefined;
+};
 
 export function safeParseFloat(value: string | null | undefined) {
   if (!value) return undefined;
@@ -45,23 +41,16 @@ export function hasNextPageAvailable(
   }, selector);
 }
 
-export function convertDataToProducts(productData: RawProductData[]): Shoe[] {
-  return productData
-    .map((product) => validateAndCreateProduct(product))
-    .filter((product) => product !== null) as Shoe[];
-}
-
 export function validateAndCreateProduct(data: RawProductData): Shoe | null {
-  const { url, image, scrapedName, originalPrice, discountPrice } = data;
+  const parsedData = productDataSchema.safeParse(data);
 
-  if (
-    !isValid(url) ||
-    !isValid(image) ||
-    !isValid(scrapedName) ||
-    !isValid(originalPrice)
-  ) {
+  if (!parsedData.success) {
+    logger.error(`Invalid product data: ${parsedData.error.toString()}`);
     return null;
   }
+
+  const { url, image, scrapedName, originalPrice, discountPrice } =
+    parsedData.data;
 
   return new Shoe(url, image, scrapedName, originalPrice, discountPrice);
 }
@@ -86,7 +75,9 @@ export function createRetailerScraper(
 
         const allProductData = await scrapeAllPagesFn(page);
 
-        const products = convertDataToProducts(allProductData);
+        const products = allProductData
+          .map((data) => validateAndCreateProduct(data))
+          .filter((product) => product !== null);
 
         return new Retailer(name, currency, url, products);
       } finally {
