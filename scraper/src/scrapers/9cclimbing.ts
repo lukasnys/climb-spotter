@@ -52,6 +52,8 @@ async function scrapeProductsFromPage(page: Page): Promise<RawProductData[]> {
       const NAME = ".product-card__title";
       const IMAGE = "img";
 
+      const HAS_DISCOUNT_SELECTOR = ".price-item--sale";
+      const REGULAR_PRICE = ".price__regular .price-item--regular";
       const ORIGINAL_PRICE = ".price__sale .price-item--regular";
       const DISCOUNT_PRICE = ".price__sale .price-item--sale";
 
@@ -74,11 +76,19 @@ async function scrapeProductsFromPage(page: Page): Promise<RawProductData[]> {
         return full.slice(0, full.lastIndexOf(sup)) + "," + sup;
       };
 
-      const originalPriceEl = element.querySelector(ORIGINAL_PRICE);
-      const discountPriceEl = element.querySelector(DISCOUNT_PRICE);
+      let originalPrice: string | undefined = undefined;
+      let discountPrice: string | undefined = undefined;
 
-      const originalPrice = getPrice(originalPriceEl);
-      const discountPrice = getPrice(discountPriceEl);
+      if (element.querySelector(HAS_DISCOUNT_SELECTOR)) {
+        const originalPriceEl = element.querySelector(ORIGINAL_PRICE);
+        const discountPriceEl = element.querySelector(DISCOUNT_PRICE);
+
+        originalPrice = getPrice(originalPriceEl);
+        discountPrice = getPrice(discountPriceEl);
+      } else {
+        const regularPriceEl = element.querySelector(REGULAR_PRICE);
+        originalPrice = getPrice(regularPriceEl);
+      }
 
       return {
         url,
