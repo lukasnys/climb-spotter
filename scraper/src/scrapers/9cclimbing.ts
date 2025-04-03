@@ -55,7 +55,7 @@ async function scrapeProductsFromPage(page: Page): Promise<RawProductData[]> {
       const NAME = ".product-card__title";
       const IMAGE = "img";
 
-      const HAS_DISCOUNT_SELECTOR = ".price-item--sale";
+      const HAS_DISCOUNT_SELECTOR = ".price.price--on-sale";
       const REGULAR_PRICE = ".price__regular .price-item--regular";
       const ORIGINAL_PRICE = ".price__sale .price-item--regular";
       const DISCOUNT_PRICE = ".price__sale .price-item--sale";
