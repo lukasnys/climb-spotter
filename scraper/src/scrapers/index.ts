@@ -1,7 +1,7 @@
 import puppeteer, { Page } from "puppeteer";
-import { Product } from "../Product.js";
 import { logger } from "@climbing-deals/shared";
 import { Retailer } from "../Retailer.js";
+import { Shoe } from "../Shoe.js";
 
 declare global {
   interface Element {
@@ -45,15 +45,13 @@ export function hasNextPageAvailable(
   }, selector);
 }
 
-export function convertDataToProducts(
-  productData: RawProductData[]
-): Product[] {
+export function convertDataToProducts(productData: RawProductData[]): Shoe[] {
   return productData
     .map((product) => validateAndCreateProduct(product))
-    .filter((product) => product !== null) as Product[];
+    .filter((product) => product !== null) as Shoe[];
 }
 
-export function validateAndCreateProduct(data: RawProductData): Product | null {
+export function validateAndCreateProduct(data: RawProductData): Shoe | null {
   const { url, image, scrapedName, originalPrice, discountPrice } = data;
 
   if (
@@ -65,7 +63,7 @@ export function validateAndCreateProduct(data: RawProductData): Product | null {
     return null;
   }
 
-  return new Product(url, image, scrapedName, originalPrice, discountPrice);
+  return new Shoe(url, image, scrapedName, originalPrice, discountPrice);
 }
 
 export function createRetailerScraper(

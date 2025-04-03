@@ -1,20 +1,15 @@
-import { Product } from "./Product.js";
+import { Shoe } from "./Shoe.js";
 
 export class Retailer {
   name: string;
   currency: string;
   url: string;
-  products: Product[];
+  shoes: Shoe[];
 
-  constructor(
-    name: string,
-    currency: string,
-    url: string,
-    products: Product[]
-  ) {
+  constructor(name: string, currency: string, url: string, shoes: Shoe[]) {
     this.name = name;
     this.currency = currency;
     this.url = url;
-    this.products = products;
+    this.shoes = shoes;
   }
 }
