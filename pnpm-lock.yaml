@@ -260,6 +260,9 @@ importers:
       puppeteer:
         specifier: ^24.4.0
         version: 24.4.0(typescript@5.8.2)
+      zod:
+        specifier: ^3.24.2
+        version: 3.24.2
     devDependencies:
       '@eslint/js':
         specifier: ^9.23.0
