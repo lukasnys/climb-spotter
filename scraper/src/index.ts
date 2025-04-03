@@ -56,16 +56,14 @@ async function scrapeShoeDeals() {
   const googleSheets = new GoogleSheets("shoes");
   await googleSheets.clearSheet();
 
-  // const scrapers = [scrapeOliunid, scrapeBergfreunde, scrape9cClimbing];
+  const scrapers = [scrapeOliunid, scrapeBergfreunde, scrape9cClimbing];
 
-  // const scrapePromises = scrapers.map(async (scraper) => {
-  //   const data = await scraper();
-  //   return writeRetailerWithProductsToSheet(data);
-  // });
+  const scrapePromises = scrapers.map(async (scraper) => {
+    const data = await scraper();
+    return writeRetailerWithProductsToSheet(data);
+  });
 
-  // await Promise.all(scrapePromises);
-
-  await scrape9cClimbing();
+  await Promise.all(scrapePromises);
 }
 
 scrapeShoeDeals();
