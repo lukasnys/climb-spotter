@@ -6,7 +6,7 @@ const LOG_LEVEL = {
   TRACE: 4,
 } as const;
 
-const CURRENT_LOG_LEVEL = LOG_LEVEL.DEBUG;
+const CURRENT_LOG_LEVEL = -1;
 
 export const logger = {
   error: (message: string) => {

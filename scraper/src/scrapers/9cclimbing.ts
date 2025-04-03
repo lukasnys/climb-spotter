@@ -43,11 +43,13 @@ async function scrapeAllPages(page: Page) {
 }
 
 async function scrapeProductsFromPage(page: Page): Promise<RawProductData[]> {
-  await page.waitForSelector(".grid__item");
   const data = await page.evaluate(() => {
-    const elements = Array.from(document.querySelectorAll(".grid__item"));
+    const elements = Array.from(
+      document.querySelectorAll("[data-collection-items] .grid__item")
+    );
 
     return elements.map((element) => {
+      console.log(element);
       const LINK = "a.grid-view-item__link";
       const BRAND = ".price__vendor dd";
       const NAME = ".product-card__title";

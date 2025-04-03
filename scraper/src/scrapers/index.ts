@@ -68,7 +68,7 @@ export function createRetailerScraper(
     ) => {
       logger.info(`Scraping ${name}...`);
       const browser = await puppeteer.launch({
-        headless: true,
+        headless: false,
         defaultViewport: { width: 1280, height: 800 },
       });
 

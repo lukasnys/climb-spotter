@@ -42,7 +42,6 @@ async function scrapeAllPages(page: Page) {
 }
 
 async function scrapeProductsFromPage(page: Page): Promise<RawProductData[]> {
-  await page.waitForSelector(".product-item");
   const data = await page.evaluate(() => {
     const elements = document.querySelectorAll(".product-item");
     return Array.from(elements).map((element) => {
