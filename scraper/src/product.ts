@@ -1,4 +1,4 @@
-import { BRANDS, SHOES } from "./constants/climbing-shoes.js";
+import { BRANDS, SHOES } from "@climbing-deals/shared";
 
 export class Product {
   url: string;
@@ -40,12 +40,10 @@ export class Product {
   }
 
   get name(): string {
-    const brand = this.brand;
-    if (!brand) return "";
+    if (!this.brand) return "";
 
-    const shoes = SHOES[brand as keyof typeof SHOES];
+    const shoes = SHOES[this.brand];
 
-    // Try to find an exact match first
     return (
       shoes.find((shoe) =>
         this.scrapedName.toLocaleLowerCase().includes(shoe.toLowerCase())
