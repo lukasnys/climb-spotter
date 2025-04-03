@@ -5,7 +5,7 @@ import {
   RawProductData,
   safeParseFloat,
 } from "./index.js";
-import { logger } from "../utils/logger.js";
+import { logger } from "@climbing-deals/shared/src/logger.js";
 
 const BASE_URL = "https://9cclimbing.be/en/collections/climbing-shoes";
 

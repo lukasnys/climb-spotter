@@ -1,6 +1,6 @@
 import puppeteer, { Page } from "puppeteer";
 import { Product } from "../Product.js";
-import { logger } from "../utils/logger.js";
+import { logger } from "@climbing-deals/shared/src/logger.js";
 import { Retailer } from "../Retailer.js";
 
 declare global {
