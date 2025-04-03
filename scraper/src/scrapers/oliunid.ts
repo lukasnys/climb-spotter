@@ -44,33 +44,53 @@ async function scrapeAllPages(page: Page) {
 async function scrapeProductsFromPage(page: Page): Promise<RawProductData[]> {
   const data = await page.evaluate(() => {
     const elements = document.querySelectorAll(".product-item");
-    return Array.from(elements)
-      .filter((element) => !!element.querySelector(".original-price-wrapper"))
-      .map((element) => {
-        const LINK = ".product-item-link";
-        const IMAGE = "img";
-        const ORIGINAL_PRICE = ".original-price-wrapper [data-price-amount]";
-        const DISCOUNT_PRICE = ".normal-price [data-price-amount]";
+    return Array.from(elements).map((element) => {
+      const LINK = ".product-item-link";
+      const IMAGE = "img";
 
-        const url = element.querySelector(LINK)?.getAttribute("href");
-        const scrapedName = element.querySelector(LINK)?.innerText?.trim();
-        const image = element.querySelector(IMAGE)?.getAttribute("data-src");
+      const OLD_PRICE = ".old-price [data-price-amount]";
+      const SPECIAL_PRICE = ".special-price [data-price-amount]";
+      const NORMAL_PRICE = ".normal-price [data-price-amount]";
 
-        const originalPrice = element
-          .querySelector(ORIGINAL_PRICE)
-          ?.getAttribute("data-price-amount");
-        const discountPrice = element
-          .querySelector(DISCOUNT_PRICE)
-          ?.getAttribute("data-price-amount");
+      const url = element.querySelector(LINK)?.getAttribute("href");
+      const scrapedName = element.querySelector(LINK)?.innerText?.trim();
+      const image = element.querySelector(IMAGE)?.getAttribute("data-src");
 
-        return {
-          url,
-          scrapedName,
-          image,
-          originalPrice,
-          discountPrice,
-        };
-      });
+      let originalPrice: string | undefined = undefined;
+      let discountPrice: string | undefined = undefined;
+
+      const oldPriceElement = element.querySelector(OLD_PRICE);
+      const specialPriceElement = element.querySelector(SPECIAL_PRICE);
+      const normalPriceElement = element.querySelector(NORMAL_PRICE);
+
+      // If there is an old price element it means there is a discount
+      // discounted price will either be a special price or the new normal price
+      if (oldPriceElement) {
+        originalPrice =
+          oldPriceElement.getAttribute("data-price-amount") ?? undefined;
+
+        if (specialPriceElement) {
+          discountPrice =
+            specialPriceElement.getAttribute("data-price-amount") ?? undefined;
+        } else if (normalPriceElement) {
+          discountPrice =
+            normalPriceElement.getAttribute("data-price-amount") ?? undefined;
+        }
+      } else {
+        originalPrice =
+          element
+            .querySelector("[data-price-amount]")
+            ?.getAttribute("data-price-amount") ?? undefined;
+      }
+
+      return {
+        url,
+        scrapedName,
+        image,
+        originalPrice,
+        discountPrice,
+      };
+    });
   });
 
   return data.map((item) => ({
