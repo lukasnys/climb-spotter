@@ -45,7 +45,7 @@ export function validateAndCreateProduct(data: RawProductData): Shoe | null {
   const parsedData = productDataSchema.safeParse(data);
 
   if (!parsedData.success) {
-    logger.error(
+    logger.warn(
       `Invalid product data for product ${data.scrapedName}: ${parsedData.error.toString()}`
     );
     return null;
