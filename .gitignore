@@ -3,6 +3,5 @@ dist/
 lib/
 .env
 *.log
-.wrangler/
 .dev.vars
 frontend/tmp/compat-prebuild/.stage2-output
