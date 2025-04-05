@@ -1,6 +1,4 @@
 packages:
   - "shared"
-  - "functions"
   - "scraper"
   - "frontend"
-  - "scraper-worker"
