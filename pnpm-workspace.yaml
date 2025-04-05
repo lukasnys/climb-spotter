@@ -3,3 +3,4 @@ packages:
   - "functions"
   - "scraper"
   - "frontend"
+  - "scraper-worker"
