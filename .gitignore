@@ -4,3 +4,4 @@ lib/
 .env
 *.log
 .wrangler/
+.dev.vars
