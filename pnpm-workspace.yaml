@@ -1,5 +1,5 @@
 packages:
+  - "shared"
   - "functions"
   - "scraper"
-  - "shared"
   - "frontend"
