@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "build": "pnpm -r run build",
+    "build": "pnpm --filter shared run build && pnpm --filter frontend run build",
     "dev": "pnpm -r run dev"
   },
   "packageManager": "pnpm@9.5.0",
