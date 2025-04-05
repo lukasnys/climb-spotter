@@ -7,7 +7,16 @@ import {
 export class GoogleSheets {
   private sheetPromise: Promise<GoogleSpreadsheetWorksheet>;
 
-  constructor(spreadsheetName: string) {
+  constructor(
+    spreadsheetName: string,
+    spreadsheetId: string | undefined,
+    privateKey: string | undefined,
+    clientEmail: string | undefined
+  ) {
+    if (!spreadsheetId) throw new Error("Spreadsheet ID is not provided");
+    if (!privateKey) throw new Error("Private key is not provided");
+    if (!clientEmail) throw new Error("Client email is not provided");
+
     if (!process.env.GOOGLE_SPREADSHEET_ID) {
       throw new Error("GOOGLE_SPREADSHEET_ID environment variable is not set");
     }
@@ -21,12 +30,12 @@ export class GoogleSheets {
     }
 
     const jwt = new JWT({
-      email: process.env.GOOGLE_CLIENT_EMAIL,
-      key: process.env.GOOGLE_PRIVATE_KEY,
+      email: clientEmail,
+      key: privateKey,
       scopes: ["https://www.googleapis.com/auth/spreadsheets"],
     });
 
-    const doc = new GoogleSpreadsheet(process.env.GOOGLE_SPREADSHEET_ID, jwt);
+    const doc = new GoogleSpreadsheet(spreadsheetId, jwt);
 
     this.sheetPromise = doc.loadInfo().then(() => {
       const sheet = doc.sheetsByTitle[spreadsheetName];
@@ -35,6 +44,15 @@ export class GoogleSheets {
       }
       return sheet;
     });
+  }
+
+  static createWithEnv(spreadsheetName: string) {
+    return new GoogleSheets(
+      spreadsheetName,
+      process.env.GOOGLE_SPREADSHEET_ID,
+      process.env.GOOGLE_PRIVATE_KEY,
+      process.env.GOOGLE_CLIENT_EMAIL
+    );
   }
 
   async clearSheet(): Promise<void> {

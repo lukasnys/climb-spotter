@@ -24,7 +24,7 @@ const headers = [
 type Headers = (typeof headers)[number];
 
 async function writeRetailerWithProductsToSheet(retailer: Retailer) {
-  const googleSheets = new GoogleSheets("shoes");
+  const googleSheets = GoogleSheets.createWithEnv("shoes");
   await googleSheets.addHeadersIfNeeded([...headers]);
 
   const rows = retailer.shoes.map(
@@ -53,7 +53,7 @@ async function writeRetailerWithProductsToSheet(retailer: Retailer) {
 async function scrapeShoeDeals() {
   logger.info("Starting scraping process...");
 
-  const googleSheets = new GoogleSheets("shoes");
+  const googleSheets = GoogleSheets.createWithEnv("shoes");
   await googleSheets.clearSheet();
 
   const scrapers = [scrapeOliunid, scrapeBergfreunde, scrape9cClimbing];
