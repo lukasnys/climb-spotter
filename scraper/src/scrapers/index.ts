@@ -1,5 +1,5 @@
 import puppeteer, { Page } from "puppeteer";
-import { logger } from "@climbing-deals/shared";
+import { logger, RetailerKey, RETAILERS } from "@climbing-deals/shared";
 import { Retailer } from "../Retailer.js";
 import { Shoe } from "../Shoe.js";
 import { z } from "zod";
@@ -87,4 +87,67 @@ export function createRetailerScraper(
       }
     },
   };
+}
+
+export abstract class Scraper {
+  retailer: RetailerKey;
+
+  constructor(retailer: RetailerKey) {
+    this.retailer = retailer;
+  }
+
+  abstract getUrlWithPage(page: number): string;
+  abstract getProductDataForPage(page: Page): Promise<RawProductData[]>;
+  abstract hasNextPage(page: Page): Promise<boolean>;
+
+  private async scrapeAllPages(page: Page) {
+    const allProductData: RawProductData[] = [];
+
+    let currentPage = 1;
+    let hasNextPage = true;
+
+    while (hasNextPage) {
+      const url = this.getUrlWithPage(currentPage);
+      await page.goto(url, { waitUntil: "networkidle2" });
+      logger.info(`Scraping page ${currentPage} with url: ${url}`);
+
+      const pageProductData = await this.getProductDataForPage(page);
+      allProductData.push(...pageProductData);
+
+      hasNextPage = await this.hasNextPage(page);
+      currentPage++;
+    }
+
+    return allProductData;
+  }
+
+  async scrape() {
+    const retailerInfo = RETAILERS[this.retailer];
+    logger.info(`Scraping ${retailerInfo.name}...`);
+
+    const browser = await puppeteer.launch({
+      headless: true,
+      defaultViewport: { width: 1280, height: 800 },
+    });
+
+    try {
+      const page = await browser.newPage();
+
+      const rawProductData = await this.scrapeAllPages(page);
+      const products = rawProductData
+        .map((data) => validateAndCreateProduct(data))
+        .filter((product) => product !== null);
+
+      return new Retailer(
+        retailerInfo.name,
+        retailerInfo.currency,
+        retailerInfo.url,
+        products
+      );
+    } catch {
+      logger.error(`Error scraping ${retailerInfo.name}`);
+    } finally {
+      await browser.close();
+    }
+  }
 }

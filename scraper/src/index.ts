@@ -1,10 +1,9 @@
 import "dotenv/config";
-import { Retailer } from "./Retailer.js";
-import { scrapeOliunid } from "./scrapers/oliunid.js";
+import { OliunidScraper } from "./scrapers/oliunid.js";
 import { scrapeBergfreunde } from "./scrapers/bergfreunde.js";
-import { GoogleSheets } from "@climbing-deals/shared";
-import { logger } from "@climbing-deals/shared";
+import { GoogleSheets, logger } from "@climbing-deals/shared";
 import { scrape9cClimbing } from "./scrapers/9cclimbing.js";
+import { Retailer } from "Retailer.js";
 
 const headers = [
   "insertedAt",
@@ -51,19 +50,28 @@ async function writeRetailerWithProductsToSheet(retailer: Retailer) {
 }
 
 async function scrapeShoeDeals() {
-  logger.info("Starting scraping process...");
-
   const googleSheets = GoogleSheets.createWithEnv("shoes");
   await googleSheets.clearSheet();
 
-  const scrapers = [scrapeOliunid, scrapeBergfreunde, scrape9cClimbing];
+  logger.info("Starting scraping process...");
 
-  const scrapePromises = scrapers.map(async (scraper) => {
-    const data = await scraper();
-    return writeRetailerWithProductsToSheet(data);
-  });
+  const oliunidScraper = new OliunidScraper();
 
-  await Promise.all(scrapePromises);
+  const scrapePromises = [
+    oliunidScraper.scrape(),
+    scrapeBergfreunde(),
+    scrape9cClimbing(),
+  ];
+  const results = await Promise.all(scrapePromises);
+  const promises = results
+    .filter((result) => !!result)
+    .map((result) => writeRetailerWithProductsToSheet(result));
+
+  await Promise.all(promises);
+
+  logger.info(
+    `Scraping process completed. ${results.length} retailers scraped.`
+  );
 }
 
 scrapeShoeDeals();
