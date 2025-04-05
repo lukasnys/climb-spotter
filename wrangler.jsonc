@@ -1,0 +1,5 @@
+{
+  "name": "climb-spotter",
+  "compatibility_date": "2025-04-05",
+  "compatibility_flags": ["nodejs_compat"],
+}
