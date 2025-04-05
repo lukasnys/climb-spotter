@@ -17,18 +17,6 @@ export class GoogleSheets {
     if (!privateKey) throw new Error("Private key is not provided");
     if (!clientEmail) throw new Error("Client email is not provided");
 
-    if (!process.env.GOOGLE_SPREADSHEET_ID) {
-      throw new Error("GOOGLE_SPREADSHEET_ID environment variable is not set");
-    }
-
-    if (!process.env.GOOGLE_PRIVATE_KEY) {
-      throw new Error("GOOGLE_PRIVATE_KEY environment variable is not set");
-    }
-
-    if (!process.env.GOOGLE_CLIENT_EMAIL) {
-      throw new Error("GOOGLE_CLIENT_EMAIL environment variable is not set");
-    }
-
     const jwt = new JWT({
       email: clientEmail,
       key: privateKey,
