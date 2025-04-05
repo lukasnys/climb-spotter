@@ -8,7 +8,5 @@ export async function onRequest(context) {
     return row.toObject();
   }) as Shoe[];
 
-  console.log("tests");
-
   return Response.json(shoes);
 }
