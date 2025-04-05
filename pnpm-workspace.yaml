@@ -1,5 +1,5 @@
 packages:
-  - "cloud-functions"
+  - "functions"
   - "scraper"
   - "shared"
   - "frontend"
