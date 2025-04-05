@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "build": "pnpm --filter shared run build && pnpm --filter frontend run build",
-    "dev": "pnpm -r run dev"
+    "build": "pnpm -r run dev",
+    "dev": "pnpm -r run dev",
+    "deploy:scraper-worker": "pnpm --filter scraper-worker run deploy"
   },
   "packageManager": "pnpm@9.5.0",
   "devDependencies": {

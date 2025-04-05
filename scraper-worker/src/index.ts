@@ -19,7 +19,7 @@ export default {
 	async fetch(req) {
 		const url = new URL(req.url);
 		url.pathname = '/__scheduled';
-		url.searchParams.append('cron', '* * * * *');
+		url.searchParams.append('cron', '* 1 * * *');
 		return new Response(`To test the scheduled handler, ensure you have used the "--test-scheduled" then try running "curl ${url.href}".`);
 	},
 
