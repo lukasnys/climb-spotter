@@ -5,7 +5,6 @@ import {
   safeParseFloat,
   Scraper,
 } from "./index.js";
-import { logger } from "@climbing-deals/shared";
 
 const BASE_URL = "https://9cclimbing.be/en/collections/climbing-shoes";
 
@@ -93,10 +92,4 @@ export class NineCClimbingScraper extends Scraper {
       discountPrice: safeParseFloat(product.discountPrice),
     }));
   }
-}
-
-// Backwards compatibility function
-export async function scrape9cClimbing() {
-  const scraper = new NineCClimbingScraper();
-  return scraper.scrape();
 }

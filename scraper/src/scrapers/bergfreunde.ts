@@ -76,8 +76,3 @@ export class BergfreundeScraper extends Scraper {
     }));
   }
 }
-
-export async function scrapeBergfreunde(): Promise<Retailer | undefined> {
-  const scraper = new BergfreundeScraper();
-  return scraper.scrape();
-}
