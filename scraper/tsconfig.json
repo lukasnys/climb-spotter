@@ -11,6 +11,11 @@
     /* Strictness */
     "strict": true,
     "noUncheckedIndexedAccess": true,
-    "noImplicitOverride": true
+    "noImplicitOverride": true,
+
+    "baseUrl": "./src", // Add this
+    "paths": {
+      "*": ["./*"] // and this
+    }
   }
 }
