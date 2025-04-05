@@ -8,9 +8,5 @@ export async function onRequest(context) {
     return row.toObject();
   }) as Shoe[];
 
-  return new Response(JSON.stringify(shoes), {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+  return Response.json(shoes);
 }
