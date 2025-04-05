@@ -70,10 +70,10 @@ export class GoogleSheets {
     await sheet.addRow(row);
   }
 
-  async getRows() {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  async getRows<T extends Record<string, any>>() {
     const sheet = await this.sheetPromise;
-    const rows = await sheet.getRows();
-    console.log(rows);
+    const rows = await sheet.getRows<T>();
     return rows;
   }
 
