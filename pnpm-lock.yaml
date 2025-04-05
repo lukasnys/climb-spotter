@@ -225,7 +225,11 @@ importers:
         specifier: ^6.0.0
         version: 6.2.4(@types/node@22.13.14)(terser@5.39.0)
 
-  functions: {}
+  functions:
+    dependencies:
+      '@climbing-deals/shared':
+        specifier: workspace:*
+        version: link:../shared
 
   scraper:
     dependencies:
