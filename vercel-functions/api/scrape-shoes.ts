@@ -6,6 +6,6 @@ export default async function handler(
   request: VercelRequest,
   response: VercelResponse
 ) {
-  await scrapeShoeDeals();
-  response.status(200).json({ success: true });
+  const shoes = await scrapeShoeDeals();
+  response.status(200).json(shoes);
 }
