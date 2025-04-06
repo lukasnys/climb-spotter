@@ -3,7 +3,6 @@ import { OliunidScraper } from "./scrapers/oliunid.js";
 import { BergfreundeScraper } from "./scrapers/bergfreunde.js";
 import { logger } from "@climbing-deals/shared";
 import { NineCClimbingScraper } from "./scrapers/9cclimbing.js";
-import { fileURLToPath } from "url";
 
 export async function scrapeShoeDeals() {
   logger.info("Starting scraping process...");
@@ -24,10 +23,4 @@ export async function scrapeShoeDeals() {
   );
 
   return results.filter((result) => !!result).flat();
-}
-
-if (process.argv[1] === fileURLToPath(import.meta.url)) {
-  scrapeShoeDeals().then((results) => {
-    console.log(results);
-  });
 }
