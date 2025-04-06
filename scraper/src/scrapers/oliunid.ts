@@ -1,10 +1,5 @@
 import { Page } from "puppeteer";
-import {
-  hasNextPageAvailable,
-  RawProductData,
-  safeParseFloat,
-  Scraper,
-} from "./index.js";
+import { hasNextPageAvailable, ScrapedShoeData, Scraper } from "./index.js";
 
 const BASE_URL = "https://www.oliunid.com/eu/footwear/climbing-shoes";
 
@@ -21,8 +16,8 @@ export class OliunidScraper extends Scraper {
     return hasNextPageAvailable(page, ".action.next");
   }
 
-  override async getProductDataForPage(page: Page): Promise<RawProductData[]> {
-    const data = await page.evaluate(() => {
+  override getProductDataForPage(page: Page): Promise<ScrapedShoeData[]> {
+    return page.evaluate(() => {
       const elements = document.querySelectorAll(".product-item");
       return Array.from(elements).map((element) => {
         const LINK = ".product-item-link";
@@ -73,11 +68,5 @@ export class OliunidScraper extends Scraper {
         };
       });
     });
-
-    return data.map((item) => ({
-      ...item,
-      originalPrice: safeParseFloat(item.originalPrice),
-      discountPrice: safeParseFloat(item.discountPrice),
-    }));
   }
 }

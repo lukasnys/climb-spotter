@@ -18,12 +18,11 @@ const productDataSchema = z.object({
   discountPrice: z.number().positive().optional(),
 });
 
-type ProductData = z.infer<typeof productDataSchema>;
-export type RawProductData = {
-  [key in keyof ProductData]: ProductData[key] | null | undefined;
+export type ScrapedShoeData = {
+  [key in keyof z.infer<typeof productDataSchema>]: string | null | undefined;
 };
 
-export function safeParseFloat(value: string | null | undefined) {
+function safeParseFloat(value: string | null | undefined) {
   if (!value) return undefined;
 
   const cleanedValue = value.replace(/[^0-9.,]/g, "");
@@ -41,8 +40,14 @@ export function hasNextPageAvailable(
   }, selector);
 }
 
-export function validateAndCreateProduct(data: RawProductData): Shoe | null {
-  const parsedData = productDataSchema.safeParse(data);
+function validateAndCreateProduct(data: ScrapedShoeData): Shoe | null {
+  const shoe = {
+    ...data,
+    originalPrice: safeParseFloat(data.originalPrice),
+    discountPrice: safeParseFloat(data.discountPrice),
+  };
+
+  const parsedData = productDataSchema.safeParse(shoe);
 
   if (!parsedData.success) {
     logger.warn(
@@ -65,11 +70,11 @@ export abstract class Scraper {
   }
 
   abstract getUrlWithPage(page: number): string;
-  abstract getProductDataForPage(page: Page): Promise<RawProductData[]>;
+  abstract getProductDataForPage(page: Page): Promise<ScrapedShoeData[]>;
   abstract hasNextPage(page: Page): Promise<boolean>;
 
   private async scrapeAllPages(page: Page) {
-    const allProductData: RawProductData[] = [];
+    const allProductData: ScrapedShoeData[] = [];
 
     let currentPage = 1;
     let hasNextPage = true;

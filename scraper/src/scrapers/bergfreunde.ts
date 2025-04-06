@@ -1,11 +1,5 @@
 import { Page } from "puppeteer";
-import { Retailer } from "../Retailer.js";
-import {
-  hasNextPageAvailable,
-  RawProductData,
-  safeParseFloat,
-  Scraper,
-} from "./index.js";
+import { hasNextPageAvailable, ScrapedShoeData, Scraper } from "./index.js";
 
 const BASE_URL = "https://www.bergfreunde.eu/climbing-shoes";
 
@@ -22,8 +16,8 @@ export class BergfreundeScraper extends Scraper {
     return hasNextPageAvailable(page, "a[title='next']");
   }
 
-  override async getProductDataForPage(page: Page): Promise<RawProductData[]> {
-    const data = await page.evaluate(() => {
+  override getProductDataForPage(page: Page): Promise<ScrapedShoeData[]> {
+    return page.evaluate(() => {
       const elements = Array.from(document.querySelectorAll(".product-item"));
 
       return Array.from(elements).map((element) => {
@@ -68,11 +62,5 @@ export class BergfreundeScraper extends Scraper {
         };
       });
     });
-
-    return data.map((item) => ({
-      ...item,
-      originalPrice: safeParseFloat(item.originalPrice),
-      discountPrice: safeParseFloat(item.discountPrice),
-    }));
   }
 }

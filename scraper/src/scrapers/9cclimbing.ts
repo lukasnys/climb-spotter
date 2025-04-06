@@ -1,10 +1,5 @@
 import { Page } from "puppeteer";
-import {
-  hasNextPageAvailable,
-  RawProductData,
-  safeParseFloat,
-  Scraper,
-} from "./index.js";
+import { hasNextPageAvailable, ScrapedShoeData, Scraper } from "./index.js";
 
 const BASE_URL = "https://9cclimbing.be/en/collections/climbing-shoes";
 
@@ -24,8 +19,8 @@ export class NineCClimbingScraper extends Scraper {
     );
   }
 
-  override async getProductDataForPage(page: Page): Promise<RawProductData[]> {
-    const data = await page.evaluate(() => {
+  override getProductDataForPage(page: Page): Promise<ScrapedShoeData[]> {
+    return page.evaluate(() => {
       const elements = Array.from(
         document.querySelectorAll("[data-collection-items] .grid__item")
       );
@@ -85,11 +80,5 @@ export class NineCClimbingScraper extends Scraper {
         };
       });
     });
-
-    return data.map((product) => ({
-      ...product,
-      originalPrice: safeParseFloat(product.originalPrice),
-      discountPrice: safeParseFloat(product.discountPrice),
-    }));
   }
 }
