@@ -23,8 +23,8 @@
     */
     "allowImportingTsExtensions": true,
     "paths": {
-      "frontend/tests/*": ["./tests/*"],
-      "frontend/*": ["./app/*"],
+      "@climb-spotter/frontend/tests/*": ["./tests/*"],
+      "@climb-spotter/frontend/*": ["./app/*"],
       "*": ["./types/*"]
     },
     "types": ["ember-source/types"]
