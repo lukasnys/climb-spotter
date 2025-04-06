@@ -229,9 +229,6 @@ importers:
       '@sparticuz/chromium':
         specifier: ^123.0.0
         version: 123.0.1
-      '@sparticuz/chromium-min':
-        specifier: ^133.0.0
-        version: 133.0.0
       dotenv:
         specifier: ^16.4.7
         version: 16.4.7
@@ -1728,10 +1725,6 @@ packages:
 
   '@socket.io/component-emitter@3.1.2':
     resolution: {integrity: sha512-9BCxFwvbGg/RsZK9tjXd8s4UcwR0MWeFQ1XEKIQVVvAGJyINdrqKMcTRyLoK8Rse1GjzLV9cwjWV1olXRWEXVA==}
-
-  '@sparticuz/chromium-min@133.0.0':
-    resolution: {integrity: sha512-7obk2CRitrlyxT4AKsCjSfE0QiHjDbi5GeOJirkerAZFV7o4VAsKzqoTQ/6rm3segZwfNFZzy8EdDelfV08aag==}
-    engines: {node: '>= 16'}
 
   '@sparticuz/chromium@123.0.1':
     resolution: {integrity: sha512-RPrA99xrddbXXZjhUH1WZkTCK3QDQ77t/0y+vULtiW1uAlWLBxorxGnNTuzBDk6eNolxOVFrXZ2aoAN+/eB5TA==}
@@ -9104,14 +9097,6 @@ snapshots:
   '@sindresorhus/merge-streams@2.3.0': {}
 
   '@socket.io/component-emitter@3.1.2': {}
-
-  '@sparticuz/chromium-min@133.0.0':
-    dependencies:
-      follow-redirects: 1.15.9
-      tar-fs: 3.0.8
-    transitivePeerDependencies:
-      - bare-buffer
-      - debug
 
   '@sparticuz/chromium@123.0.1':
     dependencies:

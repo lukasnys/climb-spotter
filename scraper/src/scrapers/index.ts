@@ -3,7 +3,7 @@ import { logger, RetailerKey, RETAILERS } from "@climbing-deals/shared";
 import { Shoe } from "../Shoe.js";
 import { type Shoe as ShoeData } from "@climbing-deals/shared";
 import { z } from "zod";
-import chromium from "@sparticuz/chromium-min";
+import chromium from "@sparticuz/chromium";
 import puppeteerCore from "puppeteer-core";
 
 declare global {
@@ -100,9 +100,7 @@ export abstract class Scraper {
     if (process.env.VERCEL_ENV === "production") {
       return puppeteerCore.launch({
         args: chromium.args,
-        executablePath: await chromium.executablePath(
-          "https://github.com/Sparticuz/chromium/releases/download/v121.0.0/chromium-v121.0.0-pack.tar"
-        ),
+        executablePath: await chromium.executablePath(),
         headless: true,
       });
     }
