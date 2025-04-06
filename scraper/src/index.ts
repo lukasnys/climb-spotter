@@ -1,7 +1,7 @@
 import "dotenv/config";
 import { OliunidScraper } from "./scrapers/oliunid.js";
 import { BergfreundeScraper } from "./scrapers/bergfreunde.js";
-import { logger } from "@climbing-deals/shared";
+import { logger } from "@climb-spotter/shared";
 import { NineCClimbingScraper } from "./scrapers/9cclimbing.js";
 
 export async function scrapeShoeDeals() {

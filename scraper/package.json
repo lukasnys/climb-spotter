@@ -1,5 +1,5 @@
 {
-  "name": "@climbing-deals/scraper",
+  "name": "@climb-spotter/scraper",
   "version": "1.0.0",
   "description": "",
   "main": "dist/index.js",
@@ -17,7 +17,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@climbing-deals/shared": "workspace:*",
+    "@climb-spotter/shared": "workspace:*",
     "dotenv": "^16.4.7",
     "puppeteer": "^22.15.0",
     "zod": "^3.24.2"

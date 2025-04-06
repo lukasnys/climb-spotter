@@ -1,7 +1,7 @@
 import puppeteer, { Page } from "puppeteer";
-import { logger, RetailerKey, RETAILERS } from "@climbing-deals/shared";
+import { logger, RetailerKey, RETAILERS } from "@climb-spotter/shared";
 import { Shoe } from "../Shoe.js";
-import { type Shoe as ShoeData } from "@climbing-deals/shared";
+import { type Shoe as ShoeData } from "@climb-spotter/shared";
 import { z } from "zod";
 
 declare global {

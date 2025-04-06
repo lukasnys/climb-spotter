@@ -223,7 +223,7 @@ importers:
 
   scraper:
     dependencies:
-      '@climbing-deals/shared':
+      '@climb-spotter/shared':
         specifier: workspace:*
         version: link:../shared
       dotenv:

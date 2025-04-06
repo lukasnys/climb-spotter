@@ -1,4 +1,4 @@
-import { BRANDS, SHOES } from "@climbing-deals/shared";
+import { BRANDS, SHOES } from "@climb-spotter/shared";
 
 export class Shoe {
   url: string;
