@@ -7,6 +7,5 @@ export default async function handler(
   response: VercelResponse
 ) {
   const shoes = await scrapeShoeDeals();
-  console.log(shoes);
   response.status(200).json(shoes);
 }
