@@ -2,4 +2,3 @@ packages:
   - "shared"
   - "scraper"
   - "frontend"
-  - "vercel-functions"

@@ -3,8 +3,6 @@ import { logger, RetailerKey, RETAILERS } from "@climbing-deals/shared";
 import { Shoe } from "../Shoe.js";
 import { type Shoe as ShoeData } from "@climbing-deals/shared";
 import { z } from "zod";
-import chromium from "@sparticuz/chromium";
-import puppeteerCore from "puppeteer-core";
 
 declare global {
   interface Element {
@@ -97,14 +95,6 @@ export abstract class Scraper {
   }
 
   async getBrowser() {
-    if (process.env.VERCEL_ENV === "production") {
-      return puppeteerCore.launch({
-        args: chromium.args,
-        executablePath: await chromium.executablePath(),
-        headless: true,
-      });
-    }
-
     return puppeteer.launch({
       headless: true,
       defaultViewport: { width: 1280, height: 800 },
