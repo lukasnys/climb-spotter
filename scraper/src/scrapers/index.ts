@@ -3,9 +3,8 @@ import { logger, RetailerKey, RETAILERS } from "@climbing-deals/shared";
 import { Shoe } from "../Shoe.js";
 import { type Shoe as ShoeData } from "@climbing-deals/shared";
 import { z } from "zod";
-import chromium from "@sparticuz/chromium";
+import chromium from "@sparticuz/chromium-min";
 import puppeteerCore from "puppeteer-core";
-import { downloadBrowser } from "puppeteer/internal/node/install.js";
 
 declare global {
   interface Element {
@@ -97,29 +96,26 @@ export abstract class Scraper {
     return allProductData;
   }
 
+  async getBrowser() {
+    if (process.env.VERCEL_ENV === "production") {
+      return puppeteerCore.launch({
+        args: chromium.args,
+        executablePath: await chromium.executablePath(),
+        headless: true,
+      });
+    }
+
+    return puppeteer.launch({
+      headless: true,
+      defaultViewport: { width: 1280, height: 800 },
+    });
+  }
+
   async scrape() {
     const retailerInfo = RETAILERS[this.retailer];
     logger.info(`Scraping ${retailerInfo.name}...`);
 
-    console.log(process.env.VERCEL_ENV);
-
-    let browser;
-
-    if (process.env.VERCEL_ENV === "production") {
-      // const executablePath = await chromium.executablePath();
-
-      // browser = await puppeteerCore.launch({
-      //   args: chromium.args,
-      //   defaultViewport: chromium.defaultViewport,
-      //   executablePath,
-      //   headless: chromium.headless,
-      // });
-
-      await downloadBrowser();
-      browser = await puppeteer.launch();
-    } else {
-      browser = await puppeteer.launch();
-    }
+    const browser = await this.getBrowser();
 
     try {
       const page = await browser.newPage();
