@@ -8,13 +8,13 @@ export async function scrapeShoeDeals() {
   logger.info("Starting scraping process...");
 
   const oliunidScraper = new OliunidScraper();
-  const bergfreundeScraper = new BergfreundeScraper();
-  const nineCClimbingScraper = new NineCClimbingScraper();
+  // const bergfreundeScraper = new BergfreundeScraper();
+  // const nineCClimbingScraper = new NineCClimbingScraper();
 
   const scrapePromises = [
     oliunidScraper.scrape(),
-    bergfreundeScraper.scrape(),
-    nineCClimbingScraper.scrape(),
+    // bergfreundeScraper.scrape(),
+    // nineCClimbingScraper.scrape(),
   ];
   const results = await Promise.all(scrapePromises);
 
