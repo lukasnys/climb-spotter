@@ -4,6 +4,7 @@ import { Shoe } from "../Shoe.js";
 import { type Shoe as ShoeData } from "@climbing-deals/shared";
 import { z } from "zod";
 import chromium from "@sparticuz/chromium";
+import puppeteerCore from "puppeteer-core";
 
 declare global {
   interface Element {
@@ -99,17 +100,27 @@ export abstract class Scraper {
     const retailerInfo = RETAILERS[this.retailer];
     logger.info(`Scraping ${retailerInfo.name}...`);
 
-    const browser = await puppeteer.launch({
-      args: chromium.args,
-      defaultViewport: chromium.defaultViewport,
-      executablePath: await chromium.executablePath(),
-      headless: chromium.headless,
-    });
+    console.log(process.env.VERCEL_ENV);
+
+    let browser;
+
+    if (process.env.VERCEL_ENV === "production") {
+      const executablePath = await chromium.executablePath();
+
+      browser = await puppeteerCore.launch({
+        args: chromium.args,
+        defaultViewport: chromium.defaultViewport,
+        executablePath,
+        headless: chromium.headless,
+      });
+    } else {
+      browser = await puppeteer.launch();
+    }
 
     try {
       const page = await browser.newPage();
 
-      const rawProductData = await this.scrapeAllPages(page);
+      const rawProductData = await this.scrapeAllPages(page as Page);
       const products = rawProductData
         .map((data) => validateAndCreateProduct(data))
         .filter((product) => product !== null);

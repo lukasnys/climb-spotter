@@ -24,3 +24,5 @@ export async function scrapeShoeDeals() {
 
   return results.filter((result) => !!result).flat();
 }
+
+scrapeShoeDeals();
