@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "start": "vercel dev",
-    "build": "vercel build",
+    "build": "pnpm build:dependencies && vercel build",
+    "build:dependencies": "pnpm --filter shared build && pnpm --filter scraper build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
