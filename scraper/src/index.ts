@@ -4,7 +4,7 @@ import { BergfreundeScraper } from "./scrapers/bergfreunde.js";
 import { logger } from "@climbing-deals/shared";
 import { NineCClimbingScraper } from "./scrapers/9cclimbing.js";
 
-async function scrapeShoeDeals() {
+export async function scrapeShoeDeals() {
   logger.info("Starting scraping process...");
 
   const oliunidScraper = new OliunidScraper();
@@ -22,5 +22,3 @@ async function scrapeShoeDeals() {
     `Scraping process completed. ${results.length} retailers scraped.`
   );
 }
-
-scrapeShoeDeals();
