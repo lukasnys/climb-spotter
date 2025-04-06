@@ -21,4 +21,6 @@ export async function scrapeShoeDeals() {
   logger.info(
     `Scraping process completed. ${results.length} retailers scraped.`
   );
+
+  return results.filter((result) => !!result).flat();
 }

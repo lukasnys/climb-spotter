@@ -1,15 +1,15 @@
+import { RetailerKey } from "./constants/retailers.js";
+
 export interface Shoe {
   insertedAt: string;
-  retailer: string;
-  retailerCurrency: string;
-  retailerUrl: string;
-  productUrl: string;
-  productImage: string;
-  productScrapedName: string;
-  productBrand: string;
-  productName: string;
-  productGender: string;
-  originalPrice: string;
-  discountPrice: string | undefined;
-  discountPercentage: string | undefined;
+  retailerKey: RetailerKey;
+  url: string;
+  imageUrl: string;
+  scrapedName: string;
+  brand: string;
+  name: string;
+  audience: "M" | "F" | "K" | "U";
+  originalPrice: number;
+  discountPrice: number | undefined;
+  discountPercentage: number | undefined;
 }

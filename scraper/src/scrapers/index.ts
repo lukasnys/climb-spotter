@@ -1,7 +1,7 @@
 import puppeteer, { Page } from "puppeteer";
 import { logger, RetailerKey, RETAILERS } from "@climbing-deals/shared";
-import { Retailer } from "../Retailer.js";
 import { Shoe } from "../Shoe.js";
+import { type Shoe as ShoeData } from "@climbing-deals/shared";
 import { z } from "zod";
 
 declare global {
@@ -111,11 +111,20 @@ export abstract class Scraper {
         .map((data) => validateAndCreateProduct(data))
         .filter((product) => product !== null);
 
-      return new Retailer(
-        retailerInfo.name,
-        retailerInfo.currency,
-        retailerInfo.url,
-        products
+      return products.map(
+        (product): ShoeData => ({
+          insertedAt: new Date().toISOString(),
+          retailerKey: this.retailer,
+          url: product.url,
+          imageUrl: product.image,
+          scrapedName: product.scrapedName,
+          brand: product.brand ?? "",
+          name: product.name ?? "",
+          audience: product.audience,
+          originalPrice: product.originalPrice,
+          discountPrice: product.discountPrice,
+          discountPercentage: product.discountPercent,
+        })
       );
     } catch {
       logger.error(`Error scraping ${retailerInfo.name}`);
