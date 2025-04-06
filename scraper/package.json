@@ -10,7 +10,8 @@
     "start": "node dist/index.js",
     "dev": "tsc && node dist/index.js",
     "dev:watch": "tsc -w",
-    "lint": "eslint . --ext .ts"
+    "lint": "eslint . --ext .ts",
+    "scrape": "tsc && node dist/index.js"
   },
   "keywords": [],
   "author": "",
