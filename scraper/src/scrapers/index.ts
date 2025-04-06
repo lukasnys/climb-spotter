@@ -5,6 +5,7 @@ import { type Shoe as ShoeData } from "@climbing-deals/shared";
 import { z } from "zod";
 import chromium from "@sparticuz/chromium";
 import puppeteerCore from "puppeteer-core";
+import { downloadBrowser } from "puppeteer/internal/node/install.js";
 
 declare global {
   interface Element {
@@ -105,14 +106,17 @@ export abstract class Scraper {
     let browser;
 
     if (process.env.VERCEL_ENV === "production") {
-      const executablePath = await chromium.executablePath();
+      // const executablePath = await chromium.executablePath();
 
-      browser = await puppeteerCore.launch({
-        args: chromium.args,
-        defaultViewport: chromium.defaultViewport,
-        executablePath,
-        headless: chromium.headless,
-      });
+      // browser = await puppeteerCore.launch({
+      //   args: chromium.args,
+      //   defaultViewport: chromium.defaultViewport,
+      //   executablePath,
+      //   headless: chromium.headless,
+      // });
+
+      await downloadBrowser();
+      browser = await puppeteer.launch();
     } else {
       browser = await puppeteer.launch();
     }
