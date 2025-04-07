@@ -7,5 +7,8 @@
     "dev": "pnpm -r run dev",
     "deploy:scraper-worker": "pnpm --filter scraper-worker run deploy"
   },
-  "packageManager": "pnpm@9.5.0"
+  "packageManager": "pnpm@9.5.0",
+  "devDependencies": {
+    "wrangler": "^4.8.0"
+  }
 }

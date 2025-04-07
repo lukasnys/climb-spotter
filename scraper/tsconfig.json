@@ -1,23 +1,20 @@
 {
-  "compilerOptions": {
-    "module": "NodeNext",
-    "target": "ES2022",
-    "moduleResolution": "nodenext",
-    "esModuleInterop": true,
-    "outDir": "dist",
-    "sourceMap": true,
-    "skipLibCheck": true,
-    "declaration": true,
-    "declarationMap": true,
+	"compilerOptions": {
+		"module": "NodeNext",
+		"target": "ES2022",
+		"moduleResolution": "nodenext",
+		"esModuleInterop": true,
+		"outDir": "dist",
+		"sourceMap": true,
+		"skipLibCheck": true,
+		"declaration": true,
+		"declarationMap": true,
 
-    /* Strictness */
-    "strict": true,
-    "noUncheckedIndexedAccess": true,
-    "noImplicitOverride": true,
+		/* Strictness */
+		"strict": true,
+		"noUncheckedIndexedAccess": true,
+		"noImplicitOverride": true,
 
-    "baseUrl": "./src", // Add this
-    "paths": {
-      "*": ["./*"] // and this
-    }
-  }
+		"types": ["@cloudflare/workers-types"]
+	}
 }
