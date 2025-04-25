@@ -1,0 +1,24 @@
+{
+  "name": "@climb-spotter/d1",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/src/index.js",
+  "types": "dist/src/index.d.ts",
+  "scripts": {
+    "drizzle:studio": "drizzle-kit studio",
+    "drizzle:pull": "drizzle-kit pull",
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^22.13.14",
+    "drizzle-kit": "^0.30.6"
+  },
+  "dependencies": {
+    "drizzle-orm": "^0.41.0",
+    "typescript": "^5.8.2"
+  }
+}

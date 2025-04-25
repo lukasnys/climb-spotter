@@ -17,4 +17,12 @@
 	"browser": {
 		"binding": "MYBROWSER",
 	},
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "climb-spotter",
+			"database_id": "64657fdf-1f9b-4043-91a7-bb55b042c0ca",
+			"migrations_dir": "models",
+		},
+	],
 }
